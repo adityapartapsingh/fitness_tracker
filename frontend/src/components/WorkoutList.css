@@ -1,0 +1,125 @@
+.workout-list-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.workout-list-container h2 {
+  color: #1f2937;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.workouts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.workout-card {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.workout-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.workout-header {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 1rem;
+}
+
+.workout-header h3 {
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.workout-date {
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.workout-details {
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background-color: #f9fafb;
+  border-radius: 6px;
+}
+
+.detail-item.full-width {
+  flex-direction: column;
+}
+
+.detail-item .label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.detail-item .value {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.detail-item .notes {
+  color: #6b7280;
+  margin-top: 0.5rem;
+  line-height: 1.5;
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.delete-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 2px solid #fecaca;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #fecaca;
+  color: #7f1d1d;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #6b7280;
+}
+
+.empty-state p {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .workouts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workout-list-container h2 {
+    font-size: 1.5rem;
+  }
+}
