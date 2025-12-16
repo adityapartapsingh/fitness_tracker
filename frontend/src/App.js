@@ -1,16 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { workoutAPI } from './api/workoutAPI';
+import { authAPI } from './api/authAPI';
 import WorkoutForm from './components/WorkoutForm';
 import WorkoutList from './components/WorkoutList';
 import ProgressCharts from './components/ProgressCharts';
 import Statistics from './components/Statistics';
 import './App.css';
+import AuthPage from './pages/AuthPage';
 
 function App() {
   const [workouts, setWorkouts] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem('user'));
+      return stored ? 'dashboard' : 'login';
+    } catch {
+      return 'login';
+    }
+  });
+  const [user, setUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('user')) || null;
+    } catch {
+      return null;
+    }
+  });
+
+  // persist token/user
+  const saveAuth = (data) => {
+    if (data?.token) localStorage.setItem('token', data.token);
+    if (data?.user) localStorage.setItem('user', JSON.stringify(data.user));
+    setUser(data.user || null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    setActiveTab('login');
+  };
 
   // Fetch all workouts
   const fetchWorkouts = async () => {
@@ -34,11 +64,13 @@ function App() {
     }
   };
 
-  // Initial fetch
+  // Fetch data only when authenticated
   useEffect(() => {
-    fetchWorkouts();
-    fetchStats();
-  }, []);
+    if (user) {
+      fetchWorkouts();
+      fetchStats();
+    }
+  }, [user]);
 
   // Handle add workout
   const handleAddWorkout = async (workout) => {
@@ -61,6 +93,11 @@ function App() {
       console.error('Error deleting workout:', error);
     }
   };
+
+  // If user is not authenticated, show full-screen auth page
+  if (!user) {
+    return <AuthPage onAuthSuccess={saveAuth} />;
+  }
 
   return (
     <div className="App">
@@ -88,6 +125,10 @@ function App() {
         >
           📋 History
         </button>
+        <div style={{ marginLeft: 12 }}>
+          <span style={{ marginRight: 8 }}>Hello, {user.name}</span>
+          <button className="tab-button" onClick={handleLogout}>Logout</button>
+        </div>
       </nav>
 
       <main className="app-main">

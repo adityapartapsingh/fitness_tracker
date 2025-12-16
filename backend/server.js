@@ -41,11 +41,35 @@ connectMongoDB();
 
 // Models
 const Workout = require('./models/Workout');
+const User = require('./models/User');
+
+// Auth
+const jwt = require('jsonwebtoken');
+const authRoutes = require('./routes/authRoutes');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
+
+// Auth middleware
+const authMiddleware = (req, res, next) => {
+  const auth = req.headers.authorization;
+  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ message: 'Unauthorized' });
+  const token = auth.split(' ')[1];
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    req.user = payload;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+// Use Auth Routes
+app.use('/api/auth', authRoutes);
 
 // Routes
 
 // GET all workouts
-app.get('/api/workouts', async (req, res) => {
+app.get('/api/workouts', authMiddleware, async (req, res) => {
   try {
     const workouts = await Workout.find().sort({ date: -1 });
     res.json(workouts);
@@ -55,7 +79,7 @@ app.get('/api/workouts', async (req, res) => {
 });
 
 // GET workout by ID
-app.get('/api/workouts/:id', async (req, res) => {
+app.get('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
@@ -66,7 +90,7 @@ app.get('/api/workouts/:id', async (req, res) => {
 });
 
 // CREATE new workout
-app.post('/api/workouts', async (req, res) => {
+app.post('/api/workouts', authMiddleware, async (req, res) => {
   const { exerciseName, duration, calories, reps, weight, date, notes } = req.body;
 
   const workout = new Workout({
@@ -88,7 +112,7 @@ app.post('/api/workouts', async (req, res) => {
 });
 
 // UPDATE workout
-app.put('/api/workouts/:id', async (req, res) => {
+app.put('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
@@ -109,7 +133,7 @@ app.put('/api/workouts/:id', async (req, res) => {
 });
 
 // DELETE workout
-app.delete('/api/workouts/:id', async (req, res) => {
+app.delete('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
@@ -122,7 +146,7 @@ app.delete('/api/workouts/:id', async (req, res) => {
 });
 
 // GET workout statistics
-app.get('/api/stats/summary', async (req, res) => {
+app.get('/api/stats/summary', authMiddleware, async (req, res) => {
   try {
     const workouts = await Workout.find();
     const totalWorkouts = workouts.length;

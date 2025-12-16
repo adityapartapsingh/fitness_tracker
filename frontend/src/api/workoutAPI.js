@@ -9,6 +9,17 @@ const api = axios.create({
   },
 });
 
+// Attach token from localStorage to every request if present
+api.interceptors.request.use((config) => {
+  try {
+    const token = localStorage.getItem('token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  } catch (e) {
+    // ignore
+  }
+  return config;
+});
+
 export const workoutAPI = {
   // Get all workouts
   getAllWorkouts: () => api.get('/workouts'),
