@@ -173,21 +173,23 @@ exports.verifyOTP = async (req, res) => {
 exports.resendOTP = async (req, res) => {
   try {
     const { email } = req.body;
+    console.log('Resend OTP request body:', req.body);
 
     if (!email) {
       return res.status(400).json({ message: 'Email is required' });
     }
 
     const user = await User.findOne({ email: email.toLowerCase() });
+    console.log('Resend OTP found user:', user ? `${user.email} (verified=${user.isVerified})` : 'none');
 
     if (!user) {
       // Don't reveal if email exists for security
       return res.status(200).json({ message: 'If email exists and is unverified, OTP will be resent.' });
     }
 
-    if (user.isVerified) {
-      return res.status(400).json({ message: 'User already verified' });
-    }
+    // Allow resending OTP even if the user is already verified.
+    // This enables "login with OTP" for users who normally authenticate with password.
+    // Do NOT change `isVerified` here; just generate and send a fresh OTP.
 
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
