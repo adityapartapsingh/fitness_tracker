@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
+import ResetPassword from '../components/Auth/ResetPassword';
 import './AuthPage.css';
 
 function AuthPage({ onAuthSuccess }) {
-  const [authMode, setAuthMode] = useState('login'); // 'login' | 'signup'
+  const [authMode, setAuthMode] = useState('login'); // 'login' | 'signup' | 'reset'
 
   return (
     <div className="auth-page">
@@ -21,12 +22,14 @@ function AuthPage({ onAuthSuccess }) {
                 onLogin={(data) => {
                   onAuthSuccess(data);
                 }}
+                openReset={() => setAuthMode('reset')}
               />
               <div className="auth-toggle">
                 <p>Don't have an account? <button onClick={() => setAuthMode('signup')}>Sign Up</button></p>
+                <p style={{ marginTop: 8 }}>Reset password? <button onClick={() => setAuthMode('reset')}>Reset</button></p>
               </div>
             </>
-          ) : (
+          ) : authMode === 'signup' ? (
             <>
               <Signup
                 onSignup={(data) => {
@@ -35,6 +38,15 @@ function AuthPage({ onAuthSuccess }) {
               />
               <div className="auth-toggle">
                 <p>Already have an account? <button onClick={() => setAuthMode('login')}>Login</button></p>
+              </div>
+            </>
+          ) : (
+            <>
+              <ResetPassword
+                onReset={() => setAuthMode('login')}
+              />
+              <div className="auth-toggle">
+                <p>Back to <button onClick={() => setAuthMode('login')}>Login</button></p>
               </div>
             </>
           )}

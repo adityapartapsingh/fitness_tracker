@@ -26,6 +26,12 @@ router.post('/verify-otp', verifyOTP);
  */
 router.post('/resend-otp', resendOTP);
 
+// Forgot / Reset password
+// POST /api/auth/forgot-password { email }
+router.post('/forgot-password', require('../controllers/authController').forgotPassword);
+// POST /api/auth/reset-password { email, token, password }
+router.post('/reset-password', require('../controllers/authController').resetPassword);
+
 /**
  * @route   POST /api/auth/login
  * @desc    Login user

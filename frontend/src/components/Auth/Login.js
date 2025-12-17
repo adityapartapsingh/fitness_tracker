@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { authAPI } from '../../api/authAPI';
 import './Auth.css';
 
-function Login({ onLogin }) {
+function Login({ onLogin, openReset }) {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [useOtp, setUseOtp] = useState(false);
   const [otp, setOtp] = useState('');
+  const [secondsLeft, setSecondsLeft] = useState(0);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -31,6 +32,7 @@ function Login({ onLogin }) {
     try {
       await authAPI.resendOtp({ email: form.email });
       setError('OTP sent if account exists and is unverified');
+      setSecondsLeft(5 * 60);
     } catch (err) {
       setError('Failed to send OTP');
     }
@@ -52,15 +54,23 @@ function Login({ onLogin }) {
   };
 
   const handleResend = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      await fetch('/api/auth/resend-otp', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.email }) });
-      setError('OTP resent if account exists and is unverified');
-    } catch (e) {
-      setError('Failed to resend OTP');
-    }
-    setLoading(false);
+    // kept for compatibility but use authAPI.resendOtp
+    await handleSendOtp();
+  };
+
+  // (forgot-password UI removed; use reset flow from AuthPage if needed)
+
+  // countdown effect
+  React.useEffect(() => {
+    if (!secondsLeft) return;
+    const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearInterval(t);
+  }, [secondsLeft]);
+
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const sec = (s % 60).toString().padStart(2, '0');
+    return `${m}:${sec}`;
   };
 
   return (
@@ -74,6 +84,7 @@ function Login({ onLogin }) {
           <label>Password</label>
           <input name="password" type="password" value={form.password} onChange={handleChange} required />
           <button type="submit" className="auth-btn" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
+          {/* Forgot-password removed from login card */}
         </form>
       )}
 
@@ -83,14 +94,22 @@ function Login({ onLogin }) {
           <input name="email" type="email" value={form.email} onChange={handleChange} required />
           <label>OTP</label>
           <input name="otp" type="text" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+          {secondsLeft > 0 ? (
+            <p>OTP expires in <strong>{formatTime(secondsLeft)}</strong></p>
+          ) : (
+            <p style={{ color: '#ef4444' }}>OTP expired. Please resend.</p>
+          )}
+          <div style={{ marginTop: 8, display: 'flex', justifyContent: 'flex-end' }}>
+            <button type="button" className="link-reset" onClick={handleSendOtp} disabled={loading}>Send OTP</button>
+          </div>
           <button type="submit" className="auth-btn" disabled={loading}>{loading ? 'Logging in…' : 'Login with OTP'}</button>
-          <button type="button" className="auth-btn" onClick={handleSendOtp} disabled={loading} style={{ marginTop: 8, background:'#f59e0b' }}>Send OTP</button>
         </form>
       )}
 
-      <div style={{ marginTop: 8 }}>
-        <button className="auth-btn" onClick={() => setUseOtp(u => !u)}>{useOtp ? 'Use Password Instead' : 'Use OTP Instead'}</button>
+      <div style={{ marginTop: 8, textAlign: 'center' }}>
+        <button type="button" className="link-reset" onClick={() => setUseOtp(u => !u)}>{useOtp ? 'Use Password Instead' : 'Use OTP Instead'}</button>
       </div>
+    
     </div>
   );
 }

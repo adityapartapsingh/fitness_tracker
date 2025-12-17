@@ -32,6 +32,14 @@ export const authAPI = {
     console.log('Resending OTP to:', payload.email);
     return axios.post('/auth/resend-otp', payload);
   },
+  forgotPassword: (payload) => {
+    console.log('Forgot password for:', payload.email);
+    return axios.post('/auth/forgot-password', payload);
+  },
+  resetPassword: (payload) => {
+    console.log('Resetting password for:', payload.email);
+    return axios.post('/auth/reset-password', payload);
+  },
 };
 
 export default authAPI;

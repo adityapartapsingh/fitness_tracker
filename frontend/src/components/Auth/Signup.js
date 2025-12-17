@@ -7,6 +7,7 @@ function Signup({ onSignup }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [step, setStep] = useState('form'); // 'form' | 'verify' | 'success'
+  const [secondsLeft, setSecondsLeft] = useState(0);
   const [otp, setOtp] = useState('');
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,6 +32,8 @@ function Signup({ onSignup }) {
       const res = await authAPI.register(form);
       // registration creates user and sends OTP
       setStep('verify');
+      // start 5-minute timer
+      setSecondsLeft(5 * 60);
     } catch (err) {
       console.error('Signup error raw:', err);
       const serverMsg = err?.response?.data?.message || err?.response?.data || null;
@@ -61,10 +64,24 @@ function Signup({ onSignup }) {
     setError('');
     try {
       await authAPI.resendOtp({ email: form.email });
+      setSecondsLeft(5 * 60);
     } catch (err) {
       setError('Failed to resend OTP');
     }
     setLoading(false);
+  };
+
+  // countdown effect
+  React.useEffect(() => {
+    if (!secondsLeft) return;
+    const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearInterval(t);
+  }, [secondsLeft]);
+
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    const sec = (s % 60).toString().padStart(2, '0');
+    return `${m}:${sec}`;
   };
 
   return (
@@ -110,6 +127,11 @@ function Signup({ onSignup }) {
       {step === 'verify' && (
         <form onSubmit={handleVerify}>
           <p>We sent a 6-digit OTP to <strong>{form.email}</strong>. Enter it below to verify your email.</p>
+          {secondsLeft > 0 ? (
+            <p>OTP expires in <strong>{formatTime(secondsLeft)}</strong></p>
+          ) : (
+            <p style={{ color: '#ef4444' }}>OTP expired. Please resend.</p>
+          )}
           <label>OTP</label>
           <input name="otp" type="text" value={otp} onChange={(e) => setOtp(e.target.value)} required />
           <button type="submit" className="auth-btn" disabled={loading}>{loading ? 'Verifying…' : 'Verify'}</button>

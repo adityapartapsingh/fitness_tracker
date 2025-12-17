@@ -71,7 +71,7 @@ app.use('/api/auth', authRoutes);
 // GET all workouts
 app.get('/api/workouts', authMiddleware, async (req, res) => {
   try {
-    const workouts = await Workout.find().sort({ date: -1 });
+    const workouts = await Workout.find({ user: req.user.id }).sort({ date: -1 });
     res.json(workouts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -83,6 +83,7 @@ app.get('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
+    if (workout.user && workout.user.toString() !== req.user.id) return res.status(404).json({ message: 'Workout not found' });
     res.json(workout);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -94,6 +95,7 @@ app.post('/api/workouts', authMiddleware, async (req, res) => {
   const { exerciseName, duration, calories, reps, weight, date, notes } = req.body;
 
   const workout = new Workout({
+    user: req.user.id,
     exerciseName,
     duration,
     calories,
@@ -116,6 +118,7 @@ app.put('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
+    if (workout.user && workout.user.toString() !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
 
     if (req.body.exerciseName) workout.exerciseName = req.body.exerciseName;
     if (req.body.duration) workout.duration = req.body.duration;
@@ -137,6 +140,7 @@ app.delete('/api/workouts/:id', authMiddleware, async (req, res) => {
   try {
     const workout = await Workout.findById(req.params.id);
     if (!workout) return res.status(404).json({ message: 'Workout not found' });
+    if (workout.user && workout.user.toString() !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
 
     await Workout.findByIdAndDelete(req.params.id);
     res.json({ message: 'Workout deleted successfully' });
@@ -148,7 +152,7 @@ app.delete('/api/workouts/:id', authMiddleware, async (req, res) => {
 // GET workout statistics
 app.get('/api/stats/summary', authMiddleware, async (req, res) => {
   try {
-    const workouts = await Workout.find();
+    const workouts = await Workout.find({ user: req.user.id });
     const totalWorkouts = workouts.length;
     const totalCalories = workouts.reduce((sum, w) => sum + (w.calories || 0), 0);
     const totalDuration = workouts.reduce((sum, w) => sum + (w.duration || 0), 0);

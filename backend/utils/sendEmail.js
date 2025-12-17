@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
  * @param {string} email - Recipient email
  * @param {string} otp - OTP code to send
  */
-const sendEmail = async (email, otp) => {
+const sendEmail = async (email, otpOrOptions) => {
   try {
     let transporter;
 
@@ -43,26 +43,42 @@ const sendEmail = async (email, otp) => {
       });
     }
 
-    const mailOptions = {
-      from: process.env.EMAIL_FROM || 'Fitness Tracker App <no-reply@fitness-tracker.local>',
-      to: email,
-      subject: 'Your Verification OTP - Fitness Tracker',
-      text: `Your OTP for email verification is: ${otp}\n\nThis code expires in 10 minutes.\n\nDo not share this code with anyone.`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">Email Verification</h2>
-          <p>Thank you for signing up with Fitness Tracker!</p>
-          <p>Your verification code is:</p>
-          <div style="background-color: #f0f0f0; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0;">
-            <h1 style="color: #5568d3; margin: 0; letter-spacing: 3px;">${otp}</h1>
+    // Backwards-compatible: if second arg is a string, treat as OTP
+    let mailOptions;
+    if (typeof otpOrOptions === 'string') {
+      const otp = otpOrOptions;
+      mailOptions = {
+        from: process.env.EMAIL_FROM || 'Fitness Tracker App <no-reply@fitness-tracker.local>',
+        to: email,
+        subject: 'Your Verification OTP - Fitness Tracker',
+        text: `Your OTP for email verification is: ${otp}\n\nThis code expires in 10 minutes.\n\nDo not share this code with anyone.`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #333;">Email Verification</h2>
+            <p>Thank you for signing up with Fitness Tracker!</p>
+            <p>Your verification code is:</p>
+            <div style="background-color: #f0f0f0; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0;">
+              <h1 style="color: #5568d3; margin: 0; letter-spacing: 3px;">${otp}</h1>
+            </div>
+            <p><strong>This code expires in 10 minutes.</strong></p>
+            <p style="color: #666; font-size: 12px;">Do not share this code with anyone. Fitness Tracker will never ask for your OTP via email.</p>
+            <hr style="border: none; border-top: 1px solid #ddd; margin-top: 20px;">
+            <p style="color: #999; font-size: 12px;">© 2025 Fitness Tracker. All rights reserved.</p>
           </div>
-          <p><strong>This code expires in 10 minutes.</strong></p>
-          <p style="color: #666; font-size: 12px;">Do not share this code with anyone. Fitness Tracker will never ask for your OTP via email.</p>
-          <hr style="border: none; border-top: 1px solid #ddd; margin-top: 20px;">
-          <p style="color: #999; font-size: 12px;">© 2025 Fitness Tracker. All rights reserved.</p>
-        </div>
-      `,
-    };
+        `,
+      };
+    } else if (typeof otpOrOptions === 'object' && otpOrOptions !== null) {
+      const opts = otpOrOptions;
+      mailOptions = {
+        from: opts.from || process.env.EMAIL_FROM || 'Fitness Tracker App <no-reply@fitness-tracker.local>',
+        to: email,
+        subject: opts.subject || 'Fitness Tracker Notification',
+        text: opts.text || '',
+        html: opts.html || opts.text || '',
+      };
+    } else {
+      throw new Error('Invalid email content');
+    }
 
     const info = await transporter.sendMail(mailOptions);
 
