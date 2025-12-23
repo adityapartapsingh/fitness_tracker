@@ -15,6 +15,11 @@ const userSchema = new mongoose.Schema({
   // OTP flow for password reset
   passwordResetOtpHash: { type: String },
   passwordResetOtpExpires: { type: Date },
+  // Streak tracking
+  currentStreak: { type: Number, default: 0 },
+  longestStreak: { type: Number, default: 0 },
+  streakPoints: { type: Number, default: 0 },
+  lastWorkoutDate: { type: Date, default: null },
   createdAt: { type: Date, default: Date.now },
 });
 
