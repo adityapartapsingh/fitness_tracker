@@ -7,6 +7,8 @@ import ProgressCharts from './components/ProgressCharts';
 import Statistics from './components/Statistics';
 import StreakCalendar from './components/StreakCalendar';
 import WeeklyStreak from './components/WeeklyStreak';
+import Profile from './components/Profile';
+import WaterWidget from './components/WaterWidget';
 import './App.css';
 import AuthPage from './pages/AuthPage';
 
@@ -198,6 +200,12 @@ function App() {
           >
             🔥 Streaks
           </button>
+          <button
+            className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            👤 Profile
+          </button>
           <div className="streak-display">
             <span className="streak-item">🔥 {streakInfo.currentStreak} day streak</span>
             <span className="streak-item">⭐ {streakInfo.streakPoints} points</span>
@@ -219,7 +227,10 @@ function App() {
       <main className="app-main">
         {activeTab === 'dashboard' && (
           <div className="dashboard">
-            <WeeklyStreak workouts={workouts} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <WeeklyStreak workouts={workouts} />
+              <WaterWidget />
+            </div>
             {stats && <Statistics stats={stats} />}
             <ProgressCharts workouts={workouts} />
           </div>
@@ -239,6 +250,10 @@ function App() {
 
         {activeTab === 'streaks' && (
           <StreakCalendar workouts={workouts} />
+        )}
+
+        {activeTab === 'profile' && (
+          <Profile />
         )}
       </main>
 

@@ -30,6 +30,16 @@
 }
 
 .day-box {
+  transform: translateY(0);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.day-box.active {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(59,130,246,0.18);
+}
+
+.day-box {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -20,6 +20,19 @@ const userSchema = new mongoose.Schema({
   longestStreak: { type: Number, default: 0 },
   streakPoints: { type: Number, default: 0 },
   lastWorkoutDate: { type: Date, default: null },
+  // Profile data
+  height: { type: Number, default: null }, // in cm
+  weight: { type: Number, default: null }, // in kg
+  age: { type: Number, default: null },
+  gender: { type: String, enum: ['male', 'female', 'other'], default: null },
+  // Daily water tracking
+  waterGoal: { type: Number, default: 2000 }, // in ml
+  waterIntake: [
+    {
+      date: { type: Date, default: Date.now },
+      amount: { type: Number, required: true }, // in ml
+    }
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 

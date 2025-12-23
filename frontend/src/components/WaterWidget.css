@@ -1,0 +1,188 @@
+
+/* Full card water widget styles (large meter left, big add button right, history below) */
+.water-widget {
+  width: 100%;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 8px 18px rgba(10, 20, 40, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.App.dark-mode .water-widget {
+  background: linear-gradient(180deg, #151521, #0f1020);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.45);
+}
+
+.water-top {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.water-left {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.water-left h3 { margin: 0; font-size: 1.1rem; }
+
+.water-meter-large {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+
+.water-meter-outer {
+  width: 140px;
+  height: 180px;
+  background: #eef6ff;
+  border-radius: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 -6px 18px rgba(59,130,246,0.06);
+}
+
+.App.dark-mode .water-meter-outer { background: #0e1530; box-shadow: inset 0 -6px 18px rgba(3,37,65,0.6); }
+
+.water-fill-large {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #06b6d4, #3b82f6);
+  transition: height 700ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* subtle animated wave overlay inside the fill for a liquid look */
+.water-fill-large::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 40px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 20' preserveAspectRatio='none'><path d='M0 10 C 20 0, 40 20, 60 10 C 80 0, 100 20, 120 10 L120 20 L0 20 Z' fill='%23ffffff' fill-opacity='0.12'/></svg>") repeat-x;
+  background-size: 120px 20px;
+  animation: wave 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes wave {
+  from { background-position-x: 0 }
+  to { background-position-x: 240px }
+}
+
+/* add a subtle inner glow and rounded top to the fill */
+.water-fill-large { border-radius: 10px 10px 0 0; box-shadow: inset 0 8px 28px rgba(6,118,198,0.12); }
+
+/* refine history bars with soft shadows */
+.hist-bar-fill { box-shadow: 0 6px 14px rgba(3,37,65,0.06) inset, 0 2px 8px rgba(3,37,65,0.06); }
+
+/* spacing tweak: larger gap under top section */
+.water-top { padding-bottom: 4px }
+
+/* glass overlay + inner rim for more realistic glass look */
+.water-meter-outer::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  height: 36%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.05));
+  border-radius: 12px;
+  pointer-events: none;
+  transform: rotate(-6deg) skewX(-6deg);
+  opacity: 0.9;
+}
+
+.water-meter-outer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35);
+  pointer-events: none;
+}
+
+.water-fill-large { border-radius: 10px 10px 0 0; box-shadow: inset 0 8px 18px rgba(3,37,65,0.06); }
+
+.water-text-large { font-size: 1rem; text-shadow: 0 2px 6px rgba(4,52,90,0.18) }
+
+/* small padding tweaks so the card breathes on narrow screens */
+.water-widget { padding: 20px; }
+@media (max-width: 880px) { .water-widget { padding: 12px } }
+
+.water-text-large {
+  position: absolute;
+  width: 100%;
+  top: 10px;
+  text-align: center;
+  font-weight: 800;
+  color: #04345a;
+}
+
+.App.dark-mode .water-text-large { color: #dfe9ff }
+
+.water-stats-large { display: flex; flex-direction: column; gap: 6px; color: #334155 }
+.App.dark-mode .water-stats-large { color: #aeb6d9 }
+.water-stats-large .val { font-weight: 800; margin-left: 6px }
+
+.water-right { display: flex; flex-direction: column; gap: 12px; align-items: flex-end; min-width: 220px }
+
+.label { font-size: 0.85rem; color: #475569 }
+.App.dark-mode .label { color: #c5cbe6 }
+
+.input-row { display: flex; gap: 8px; align-items: center }
+.input-row input { width: 120px; padding: 8px 10px; border-radius: 10px; border: 1px solid #e6eefb }
+.App.dark-mode .input-row input { background:#0f1426; border-color:#222635; color:#e6eaf9 }
+
+.quick-buttons { display:flex; gap:8px }
+.quick-buttons button { padding: 8px 12px; border-radius: 10px; border: none; background: #eef2ff; cursor:pointer; font-weight:700 }
+.App.dark-mode .quick-buttons button { background:#111428; color:#dfe9ff }
+
+.add-button {
+  margin-top: 4px;
+  padding: 12px 18px;
+  background: linear-gradient(180deg,#06b6d4,#0470b6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 0.98rem;
+  box-shadow: 0 6px 18px rgba(6,118,198,0.18);
+  cursor: pointer;
+}
+.add-button:disabled { opacity: 0.6; cursor: default }
+
+.goal-input { width: 100%; display:flex; gap:8px; align-items:center; justify-content:flex-end }
+.goal-input input { width: 120px; padding: 8px 10px; border-radius: 10px; border: 1px solid #e6eefb }
+.App.dark-mode .goal-input input { background:#0f1426; border-color:#222635; color:#e6eaf9 }
+
+.water-history-card { background: transparent; padding-top: 6px }
+.water-history-card h4 { margin: 6px 0; color:#374151 }
+.App.dark-mode .water-history-card h4 { color:#cfd6f0 }
+
+.history-grid-large { display:flex; gap:12px; align-items:end; padding: 8px 2px; justify-content: space-between }
+.history-item-large { flex: 1 1 0; max-width: 64px; min-width: 28px; display:flex; flex-direction:column; align-items:center; gap:6px }
+.hist-bar-outer { width:100%; height:110px; background: rgba(14,20,40,0.05); border-radius:8px; display:flex; align-items:flex-end; overflow:hidden }
+.App.dark-mode .hist-bar-outer { background: rgba(255,255,255,0.03) }
+.hist-bar-fill { width:100%; background: linear-gradient(180deg,#60a5fa,#06b6d4); transition: height 900ms cubic-bezier(.2,.8,.2,1); border-radius:6px 6px 0 0 }
+.hist-date { font-size:0.72rem; color:#64748b }
+.App.dark-mode .hist-date { color:#9aa6d6 }
+.hist-amount { font-size:0.72rem; color:#0b63c6; font-weight:700 }
+.App.dark-mode .hist-amount { color:#7ec8ff }
+
+@media (max-width: 880px) {
+  .water-top { flex-direction: column; align-items: stretch }
+  .water-right { align-items: stretch }
+  .water-left { justify-content: flex-start }
+  .water-meter-outer { width: 110px; height: 150px }
+  .history-item-large { width: 32px }
+}
+

@@ -1,0 +1,524 @@
+.profile-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+}
+
+.alert-success {
+  background-color: #d1fae5;
+  border: 2px solid #10b981;
+  color: #047857;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  border: 2px solid #ef4444;
+  color: #991b1b;
+}
+
+.App.dark-mode .alert-success {
+  background-color: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  color: #86efac;
+}
+
+.App.dark-mode .alert-error {
+  background-color: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.profile-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.App.dark-mode .profile-card {
+  background-color: #1a1a2e;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.profile-card h2 {
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .profile-card h2 {
+  color: #e0e0e0;
+}
+
+.profile-card h3 {
+  font-size: 1.2rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .profile-card h3 {
+  color: #e0e0e0;
+}
+
+.profile-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .form-group label {
+  color: #e0e0e0;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.App.dark-mode .form-group input,
+.App.dark-mode .form-group select {
+  background-color: #2a2a3e;
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  width: 100%;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: #10b981;
+  color: white;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.bmi-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.App.dark-mode .bmi-result {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
+}
+
+.bmi-score {
+  text-align: center;
+}
+
+.bmi-value {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.bmi-category {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.bmi-info {
+  width: 100%;
+}
+
+.bmi-info p {
+  color: #1f2937;
+  margin: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .bmi-info p {
+  color: #e0e0e0;
+}
+
+.bmi-guide {
+  width: 100%;
+  padding: 1rem;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.App.dark-mode .bmi-guide {
+  background-color: #2a2a3e;
+}
+
+.bmi-guide h4 {
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .bmi-guide h4 {
+  color: #e0e0e0;
+}
+
+.bmi-guide ul {
+  list-style: none;
+  padding: 0;
+}
+
+.bmi-guide li {
+  color: #1f2937;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .bmi-guide li {
+  color: #e0e0e0;
+}
+
+.water-tracker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .water-tracker {
+    grid-template-columns: 1fr;
+  }
+}
+
+.water-display {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.App.dark-mode .water-display {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
+}
+
+.water-meter {
+  width: 80px;
+  height: 150px;
+  background: #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  transition: background 0.3s ease;
+}
+
+.App.dark-mode .water-meter {
+  background: #333;
+}
+
+.water-level {
+  background: linear-gradient(180deg, #3b82f6, #0ea5e9);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: height 0.5s ease;
+}
+
+.water-text {
+  color: white;
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.water-info {
+  flex: 1;
+}
+
+.water-stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: #1f2937;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .water-stat {
+  color: #e0e0e0;
+}
+
+.water-stat .label {
+  font-weight: 600;
+}
+
+.water-stat .value {
+  font-weight: 700;
+  color: #3b82f6;
+}
+
+.water-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.water-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.water-input-group label {
+  font-weight: 600;
+  color: #1f2937;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .water-input-group label {
+  color: #e0e0e0;
+}
+
+.input-with-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.input-with-buttons input {
+  grid-column: 1 / -1;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.App.dark-mode .input-with-buttons input {
+  background-color: #2a2a3e;
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+.btn-quick {
+  padding: 0.5rem 1rem;
+  background-color: #e5e7eb;
+  color: #1f2937;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.App.dark-mode .btn-quick {
+  background-color: #2a2a3e;
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+.btn-quick:hover {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.water-goal-update {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.water-goal-update label {
+  font-weight: 600;
+  color: #1f2937;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .water-goal-update label {
+  color: #e0e0e0;
+}
+
+.water-goal-update input {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: white;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.App.dark-mode .water-goal-update input {
+  background-color: #2a2a3e;
+  color: #e0e0e0;
+  border-color: #333;
+}
+
+.water-history {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  grid-column: 1 / -1;
+  transition: background 0.3s ease;
+}
+
+.App.dark-mode .water-history {
+  background: #2a2a3e;
+}
+
+.water-history h3 {
+  margin-bottom: 1rem;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+}
+
+.history-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.history-date {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b7280;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .history-date {
+  color: #a0a0b0;
+}
+
+.history-bar {
+  width: 30px;
+  height: 100px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  transition: background 0.3s ease;
+}
+
+.App.dark-mode .history-bar {
+  background: #333;
+}
+
+.history-fill {
+  background: linear-gradient(180deg, #3b82f6, #0ea5e9);
+  transition: height 0.3s ease;
+}
+
+.history-amount {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1f2937;
+  transition: color 0.3s ease;
+}
+
+.App.dark-mode .history-amount {
+  color: #e0e0e0;
+}
+
+/* Simplified: Water-related styles moved to WaterWidget.css
+   Keep only a small spacer class for profile layout. */
+.profile-water-space {
+  margin-bottom: 1.6rem;
+}
+
+@media (max-width: 768px) {
+  .profile-container { padding: 1rem; }
+  .profile-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+}

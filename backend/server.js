@@ -66,6 +66,10 @@ const authMiddleware = (req, res, next) => {
 // Use Auth Routes
 app.use('/api/auth', authRoutes);
 
+// Use Profile Routes
+const profileRoutes = require('./routes/profileRoutes');
+app.use('/api/user', profileRoutes);
+
 // Routes
 
 // GET all workouts
