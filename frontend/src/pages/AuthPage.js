@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
 import ResetPassword from '../components/Auth/ResetPassword';
 import './AuthPage.css';
 
 function AuthPage({ onAuthSuccess }) {
-  const [authMode, setAuthMode] = useState('login'); // 'login' | 'signup' | 'reset'
+  const { mode } = useParams();
+  const navigate = useNavigate();
+  const [authMode, setAuthMode] = useState(mode || 'login');
+
+  useEffect(() => {
+    if (mode && mode !== authMode) {
+      setAuthMode(mode);
+    }
+  }, [mode]);
+
+  const handleModeChange = (newMode) => {
+    setAuthMode(newMode);
+    navigate(`/auth/${newMode}`);
+  };
 
   return (
     <div className="auth-page">
@@ -22,11 +36,11 @@ function AuthPage({ onAuthSuccess }) {
                 onLogin={(data) => {
                   onAuthSuccess(data);
                 }}
-                openReset={() => setAuthMode('reset')}
+                openReset={() => handleModeChange('reset')}
               />
               <div className="auth-toggle">
-                <p>Don't have an account? <button onClick={() => setAuthMode('signup')}>Sign Up</button></p>
-                <p style={{ marginTop: 8 }}>Reset password? <button onClick={() => setAuthMode('reset')}>Reset</button></p>
+                <p>Don't have an account? <button onClick={() => handleModeChange('signup')}>Sign Up</button></p>
+                <p style={{ marginTop: 8 }}>Reset password? <button onClick={() => handleModeChange('reset')}>Reset</button></p>
               </div>
             </>
           ) : authMode === 'signup' ? (
@@ -37,16 +51,16 @@ function AuthPage({ onAuthSuccess }) {
                 }}
               />
               <div className="auth-toggle">
-                <p>Already have an account? <button onClick={() => setAuthMode('login')}>Login</button></p>
+                <p>Already have an account? <button onClick={() => handleModeChange('login')}>Login</button></p>
               </div>
             </>
           ) : (
             <>
               <ResetPassword
-                onReset={() => setAuthMode('login')}
+                onReset={() => handleModeChange('login')}
               />
               <div className="auth-toggle">
-                <p>Back to <button onClick={() => setAuthMode('login')}>Login</button></p>
+                <p>Back to <button onClick={() => handleModeChange('login')}>Login</button></p>
               </div>
             </>
           )}

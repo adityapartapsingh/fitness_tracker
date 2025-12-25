@@ -361,12 +361,57 @@
     padding: 1rem;
   }
 
+  .calendar-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .calendar-header p {
+    font-size: 1rem;
+  }
+
   .calendar-wrapper {
     padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .calendar-controls {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .nav-button,
+  .today-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .month-select,
+  .year-input {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  .year-input {
+    width: 80px;
+  }
+
+  .month-year-display {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .calendar-grid {
+    gap: 0.5rem;
   }
 
   .calendar-day {
     min-height: 50px;
+    padding: 0.4rem;
+  }
+
+  .day-number {
+    font-size: 0.8rem;
   }
 
   .day-status {
@@ -375,5 +420,147 @@
 
   .calendar-legend {
     gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .legend-box {
+    width: 20px;
+    height: 20px;
+  }
+
+  .legend-item span {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .streak-calendar-container {
+    padding: 0.75rem;
+  }
+
+  .calendar-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .calendar-header p {
+    font-size: 0.95rem;
+  }
+
+  .calendar-wrapper {
+    padding: 0.85rem;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+  }
+
+  .calendar-controls {
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .nav-button,
+  .today-button {
+    width: 100%;
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .month-year-selector {
+    width: 100%;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .month-select {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .year-input {
+    flex: 1;
+    min-width: 70px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+    width: auto;
+  }
+
+  .month-year-display {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+  }
+
+  .calendar-day-header {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .calendar-grid {
+    gap: 0.35rem;
+  }
+
+  .calendar-day {
+    min-height: 45px;
+    padding: 0.3rem;
+    border-radius: 6px;
+  }
+
+  .day-number {
+    font-size: 0.75rem;
+  }
+
+  .day-status {
+    font-size: 1rem;
+    margin-top: 0.15rem;
+  }
+
+  .calendar-day:hover {
+    transform: scale(1.02);
+  }
+
+  .calendar-legend {
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .legend-item {
+    gap: 0.5rem;
+  }
+
+  .legend-box {
+    width: 18px;
+    height: 18px;
+  }
+
+  .legend-item span {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .calendar-header h2 {
+    font-size: 1.15rem;
+  }
+
+  .calendar-day {
+    min-height: 40px;
+  }
+
+  .calendar-day-header {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
+  }
+
+  .day-number {
+    font-size: 0.7rem;
+  }
+
+  .day-status {
+    font-size: 0.9rem;
   }
 }

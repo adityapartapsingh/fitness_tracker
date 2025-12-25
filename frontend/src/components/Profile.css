@@ -519,6 +519,232 @@
 }
 
 @media (max-width: 768px) {
-  .profile-container { padding: 1rem; }
-  .profile-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .profile-card {
+    padding: 1.5rem;
+  }
+
+  .profile-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .profile-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .alert {
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .water-tracker {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .bmi-value {
+    font-size: 2.5rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.7rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .history-grid {
+    gap: 0.75rem;
+  }
+
+  .history-bar {
+    width: 25px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-container {
+    padding: 0.75rem;
+  }
+
+  .profile-card {
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+
+  .profile-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .profile-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.65rem;
+    font-size: 16px;
+    border-radius: 6px;
+  }
+
+  .alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+
+  .bmi-result {
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .bmi-value {
+    font-size: 2.2rem;
+  }
+
+  .bmi-category {
+    font-size: 1rem;
+  }
+
+  .bmi-info p {
+    font-size: 0.9rem;
+  }
+
+  .bmi-guide {
+    padding: 0.85rem;
+  }
+
+  .bmi-guide h4 {
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .bmi-guide li {
+    font-size: 0.85rem;
+    margin: 0.4rem 0;
+  }
+
+  .water-display {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .water-meter {
+    width: 70px;
+    height: 120px;
+  }
+
+  .water-text {
+    font-size: 0.7rem;
+  }
+
+  .water-stat {
+    margin-bottom: 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  .water-controls {
+    gap: 0.85rem;
+  }
+
+  .water-input-group label {
+    font-size: 0.9rem;
+  }
+
+  .input-with-buttons input {
+    padding: 0.6rem;
+    font-size: 16px;
+  }
+
+  .btn-quick {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .water-history {
+    padding: 1rem;
+  }
+
+  .water-history h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .history-grid {
+    gap: 0.5rem;
+  }
+
+  .history-date {
+    font-size: 0.7rem;
+  }
+
+  .history-bar {
+    width: 20px;
+    height: 70px;
+  }
+
+  .history-amount {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .profile-container {
+    padding: 0.5rem;
+  }
+
+  .profile-card {
+    padding: 1rem;
+  }
+
+  .profile-card h2 {
+    font-size: 1.1rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 16px;
+  }
+
+  .history-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .history-bar {
+    width: 18px;
+    height: 60px;
+  }
 }

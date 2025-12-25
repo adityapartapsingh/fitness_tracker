@@ -1,16 +1,19 @@
 const nodemailer = require('nodemailer');
 
 /**
- * Send OTP email to user
- * @param {string} email - Recipient email
- * @param {string} otp - OTP code to send
+ * Send email (OTP or custom content)
+ * @param {string} email - Recipient email address
+ * @param {string|Object} otpOrOptions - OTP string OR custom mail options
  */
 const sendEmail = async (email, otpOrOptions) => {
   try {
     let transporter;
 
-    // Use Gmail if credentials provided, otherwise use test account or SMTP
+    // ===============================
+    // Create transporter
+    // ===============================
     if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+      // Gmail (Recommended for production)
       transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -18,8 +21,12 @@ const sendEmail = async (email, otpOrOptions) => {
           pass: process.env.GMAIL_APP_PASSWORD,
         },
       });
-    } else if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
-      // Use custom SMTP
+    } else if (
+      process.env.SMTP_HOST &&
+      process.env.SMTP_USER &&
+      process.env.SMTP_PASS
+    ) {
+      // Custom SMTP
       transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT || 587,
@@ -30,7 +37,7 @@ const sendEmail = async (email, otpOrOptions) => {
         },
       });
     } else {
-      // Use Ethereal for development/testing
+      // Ethereal (Development / Testing)
       const testAccount = await nodemailer.createTestAccount();
       transporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
@@ -43,34 +50,108 @@ const sendEmail = async (email, otpOrOptions) => {
       });
     }
 
-    // Backwards-compatible: if second arg is a string, treat as OTP
+    // ===============================
+    // Email content
+    // ===============================
     let mailOptions;
+
+    // ---- OTP Email (Professional Template) ----
     if (typeof otpOrOptions === 'string') {
       const otp = otpOrOptions;
+
       mailOptions = {
-        from: process.env.EMAIL_FROM || 'Fitness Tracker App <no-reply@fitness-tracker.local>',
+        from:
+          process.env.EMAIL_FROM ||
+          '"Fitness Tracker" <no-reply@fitness-tracker.com>',
         to: email,
-        subject: 'Your Verification OTP - Fitness Tracker',
-        text: `Your OTP for email verification is: ${otp}\n\nThis code expires in 10 minutes.\n\nDo not share this code with anyone.`,
+        subject: 'Your One-Time Password (OTP) – Fitness Tracker',
+        text: `
+Dear User,
+
+We received a request to verify your email address for your Fitness Tracker account.
+
+Your One-Time Password (OTP) is:
+${otp}
+
+This OTP is valid for the next 10 minutes.
+
+For security reasons, please do not share this code with anyone. Fitness Tracker will never ask you for your OTP via phone, email, or message.
+
+If you did not request this verification, please ignore this email.
+
+Best regards,
+Fitness Tracker Team
+`,
         html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">Email Verification</h2>
-            <p>Thank you for signing up with Fitness Tracker!</p>
-            <p>Your verification code is:</p>
-            <div style="background-color: #f0f0f0; padding: 20px; text-align: center; border-radius: 5px; margin: 20px 0;">
-              <h1 style="color: #5568d3; margin: 0; letter-spacing: 3px;">${otp}</h1>
-            </div>
-            <p><strong>This code expires in 10 minutes.</strong></p>
-            <p style="color: #666; font-size: 12px;">Do not share this code with anyone. Fitness Tracker will never ask for your OTP via email.</p>
-            <hr style="border: none; border-top: 1px solid #ddd; margin-top: 20px;">
-            <p style="color: #999; font-size: 12px;">© 2025 Fitness Tracker. All rights reserved.</p>
-          </div>
-        `,
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Verification</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f5f7fa;">
+  <div style="padding:30px;">
+    <div style="max-width:600px; margin:auto; background:#ffffff; border-radius:8px; padding:30px; font-family:Arial, Helvetica, sans-serif;">
+      
+      <h2 style="color:#2c3e50; margin-top:0;">Email Verification</h2>
+
+      <p style="font-size:15px; color:#333;">
+        Dear User,
+      </p>
+
+      <p style="font-size:15px; color:#333;">
+        We received a request to verify your email address for your <strong>Fitness Tracker</strong> account.
+      </p>
+
+      <p style="font-size:15px; color:#333;">
+        Please use the One-Time Password (OTP) below to complete your verification:
+      </p>
+
+      <div style="background:#f1f3f6; padding:20px; text-align:center; border-radius:6px; margin:25px 0;">
+        <span style="font-size:28px; letter-spacing:4px; color:#1e6fe3; font-weight:bold;">
+          ${otp}
+        </span>
+      </div>
+
+      <p style="font-size:15px; color:#333;">
+        This OTP is valid for <strong>10 minutes</strong>.
+      </p>
+
+      <p style="font-size:13px; color:#555;">
+        For your security, do not share this code with anyone. Fitness Tracker will never ask for your OTP via email, phone calls, or messages.
+      </p>
+
+      <p style="font-size:13px; color:#555;">
+        If you did not request this verification, please ignore this email.
+      </p>
+
+      <hr style="border:none; border-top:1px solid #e0e0e0; margin:25px 0;" />
+
+      <p style="font-size:12px; color:#777;">
+        Regards,<br />
+        <strong>Fitness Tracker Team</strong>
+      </p>
+
+      <p style="font-size:11px; color:#aaa;">
+        © 2025 Fitness Tracker. All rights reserved.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+`,
       };
-    } else if (typeof otpOrOptions === 'object' && otpOrOptions !== null) {
+    }
+
+    // ---- Custom Email (Optional Use) ----
+    else if (typeof otpOrOptions === 'object' && otpOrOptions !== null) {
       const opts = otpOrOptions;
+
       mailOptions = {
-        from: opts.from || process.env.EMAIL_FROM || 'Fitness Tracker App <no-reply@fitness-tracker.local>',
+        from:
+          opts.from ||
+          process.env.EMAIL_FROM ||
+          '"Fitness Tracker" <no-reply@fitness-tracker.com>',
         to: email,
         subject: opts.subject || 'Fitness Tracker Notification',
         text: opts.text || '',
@@ -80,17 +161,20 @@ const sendEmail = async (email, otpOrOptions) => {
       throw new Error('Invalid email content');
     }
 
+    // ===============================
+    // Send email
+    // ===============================
     const info = await transporter.sendMail(mailOptions);
 
-    // Log preview URL for test accounts
-    if (nodemailer.getTestMessageUrl && info) {
+    // Ethereal preview URL
+    if (nodemailer.getTestMessageUrl(info)) {
       console.log('📧 Email Preview URL:', nodemailer.getTestMessageUrl(info));
     }
 
-    console.log('✅ OTP email sent to:', email);
+    console.log('✅ Email sent successfully to:', email);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('❌ Failed to send OTP email:', error.message);
+    console.error('❌ Email sending failed:', error.message);
     throw new Error(`Failed to send email: ${error.message}`);
   }
 };

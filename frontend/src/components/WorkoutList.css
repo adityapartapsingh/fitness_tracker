@@ -121,5 +121,109 @@
 
   .workout-list-container h2 {
     font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .workout-card {
+    padding: 1.25rem;
+  }
+
+  .workout-header h3 {
+    font-size: 1.15rem;
+  }
+
+  .detail-item {
+    padding: 0.4rem;
+  }
+
+  .delete-btn {
+    padding: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .workout-list-container {
+    padding: 0;
+  }
+
+  .workout-list-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.25rem;
+    padding: 0 0.75rem;
+  }
+
+  .workouts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 0 0.75rem;
+  }
+
+  .workout-card {
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .workout-header {
+    margin-bottom: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .workout-header h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .workout-date {
+    font-size: 0.8rem;
+  }
+
+  .detail-item {
+    margin-bottom: 0.6rem;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .detail-item .label {
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  .detail-item .value {
+    font-size: 0.9rem;
+  }
+
+  .detail-item .notes {
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+  }
+
+  .delete-btn {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+    border-radius: 10px;
+  }
+
+  .empty-state p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .workout-card {
+    padding: 0.85rem;
+  }
+
+  .workout-header h3 {
+    font-size: 1rem;
+  }
+
+  .detail-item {
+    flex-direction: column;
   }
 }

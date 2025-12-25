@@ -70,6 +70,10 @@ app.use('/api/auth', authRoutes);
 const profileRoutes = require('./routes/profileRoutes');
 app.use('/api/user', profileRoutes);
 
+// Use AI Routes
+const aiRoutes = require('./routes/aiRoutes');
+app.use('/api/ai', authMiddleware, aiRoutes);
+
 // Routes
 
 // GET all workouts
@@ -111,6 +115,60 @@ app.post('/api/workouts', authMiddleware, async (req, res) => {
 
   try {
     const newWorkout = await workout.save();
+    // Update user's streak information
+    try {
+      const user = await User.findById(req.user.id);
+      if (user) {
+        const pointsPerDay = 10; // points awarded per day for maintaining streak
+
+        // Normalize dates to start of day (UTC) for comparison
+        const workoutDate = new Date(newWorkout.date);
+        workoutDate.setHours(0, 0, 0, 0);
+
+        let lastDate = null;
+        if (user.lastWorkoutDate) {
+          lastDate = new Date(user.lastWorkoutDate);
+          lastDate.setHours(0, 0, 0, 0);
+        }
+
+        if (!lastDate) {
+          // First recorded workout for this user
+          user.currentStreak = 1;
+          user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
+          user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
+          user.lastWorkoutDate = workoutDate;
+        } else {
+          const diffMs = workoutDate.getTime() - lastDate.getTime();
+          const diffDays = Math.round(diffMs / (24 * 60 * 60 * 1000));
+
+          if (diffDays === 0) {
+            // same day - no change to streak, but ensure lastWorkoutDate is set
+            user.lastWorkoutDate = lastDate; // keep as-is
+          } else if (diffDays === 1) {
+            // consecutive day - increment streak
+            user.currentStreak = (user.currentStreak || 0) + 1;
+            user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
+            user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
+            user.lastWorkoutDate = workoutDate;
+          } else if (diffDays > 1) {
+            // break in streak - reset to 1 (today)
+            user.currentStreak = 1;
+            user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
+            user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
+            user.lastWorkoutDate = workoutDate;
+          } else if (diffDays < 0) {
+            // workout date is earlier than last recorded workout - do not modify streak
+            // no-op
+          }
+        }
+
+        await user.save();
+      }
+    } catch (streakErr) {
+      console.error('Failed to update user streak:', streakErr);
+      // Do not block workout creation on streak update failure
+    }
+
     res.status(201).json(newWorkout);
   } catch (error) {
     res.status(400).json({ message: error.message });

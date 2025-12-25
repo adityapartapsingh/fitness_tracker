@@ -117,4 +117,83 @@
   .day-indicator {
     font-size: 1.5rem;
   }
+
+  .day-name {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .weekly-streak-container h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .weekly-streak-container {
+    padding: 1.25rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .weekly-streak-container h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .weekly-streak-grid {
+    gap: 0.4rem;
+  }
+
+  .day-box {
+    padding: 0.65rem 0.5rem;
+    min-height: 70px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+  }
+
+  .day-name {
+    font-size: 0.75rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .day-indicator {
+    font-size: 1.3rem;
+  }
+
+  .day-box:hover {
+    transform: translateY(-1px);
+  }
+
+  .day-box.active {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(59,130,246,0.15);
+  }
+}
+
+@media (max-width: 374px) {
+  .weekly-streak-container {
+    padding: 1rem;
+  }
+
+  .weekly-streak-container h3 {
+    font-size: 1rem;
+  }
+
+  .weekly-streak-grid {
+    gap: 0.3rem;
+  }
+
+  .day-box {
+    padding: 0.5rem 0.4rem;
+    min-height: 60px;
+  }
+
+  .day-name {
+    font-size: 0.7rem;
+  }
+
+  .day-indicator {
+    font-size: 1.1rem;
+  }
 }

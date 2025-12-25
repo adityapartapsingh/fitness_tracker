@@ -179,10 +179,280 @@
 .App.dark-mode .hist-amount { color:#7ec8ff }
 
 @media (max-width: 880px) {
-  .water-top { flex-direction: column; align-items: stretch }
-  .water-right { align-items: stretch }
-  .water-left { justify-content: flex-start }
-  .water-meter-outer { width: 110px; height: 150px }
-  .history-item-large { width: 32px }
+  .water-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .water-right {
+    align-items: stretch;
+  }
+
+  .water-left {
+    justify-content: flex-start;
+  }
+
+  .water-meter-outer {
+    width: 110px;
+    height: 150px;
+  }
+
+  .history-item-large {
+    width: 32px;
+  }
+
+  .water-widget {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .water-widget {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .water-top {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .water-meter-large {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .water-meter-outer {
+    width: 100px;
+    height: 140px;
+  }
+
+  .water-left h3 {
+    font-size: 1rem;
+  }
+
+  .water-text-large {
+    font-size: 0.9rem;
+  }
+
+  .water-right {
+    width: 100%;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .label {
+    font-size: 0.8rem;
+  }
+
+  .input-row {
+    justify-content: space-between;
+  }
+
+  .input-row input {
+    width: 100px;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+  }
+
+  .quick-buttons button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .add-button {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .goal-input {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .goal-input input {
+    width: 100%;
+  }
+
+  .history-grid-large {
+    gap: 8px;
+    padding: 6px 0;
+  }
+
+  .history-item-large {
+    max-width: 50px;
+    min-width: 24px;
+  }
+
+  .hist-bar-outer {
+    height: 90px;
+  }
+}
+
+@media (max-width: 480px) {
+  .water-widget {
+    padding: 10px;
+    gap: 10px;
+    border-radius: 12px;
+  }
+
+  .water-top {
+    gap: 10px;
+  }
+
+  .water-meter-large {
+    gap: 10px;
+  }
+
+  .water-meter-outer {
+    width: 85px;
+    height: 120px;
+    border-radius: 14px;
+  }
+
+  .water-left h3 {
+    font-size: 0.95rem;
+  }
+
+  .water-stats-large {
+    gap: 4px;
+    font-size: 0.85rem;
+  }
+
+  .water-stats-large .val {
+    margin-left: 4px;
+  }
+
+  .water-text-large {
+    font-size: 0.8rem;
+    top: 8px;
+  }
+
+  .water-right {
+    gap: 8px;
+  }
+
+  .label {
+    font-size: 0.75rem;
+  }
+
+  .input-row {
+    gap: 6px;
+    justify-content: flex-end;
+  }
+
+  .input-row input {
+    width: 90px;
+    padding: 5px 8px;
+    font-size: 14px;
+    border-radius: 8px;
+  }
+
+  .quick-buttons {
+    gap: 6px;
+  }
+
+  .quick-buttons button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .add-button {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    margin-top: 2px;
+  }
+
+  .goal-input {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .goal-input input {
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 14px;
+  }
+
+  .water-history-card h4 {
+    font-size: 0.95rem;
+  }
+
+  .history-grid-large {
+    gap: 6px;
+    padding: 4px 0;
+  }
+
+  .history-item-large {
+    max-width: 40px;
+    min-width: 20px;
+    gap: 4px;
+  }
+
+  .hist-bar-outer {
+    height: 75px;
+    border-radius: 6px;
+  }
+
+  .hist-date {
+    font-size: 0.65rem;
+  }
+
+  .hist-amount {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 374px) {
+  .water-widget {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .water-meter-outer {
+    width: 75px;
+    height: 100px;
+  }
+
+  .water-left h3 {
+    font-size: 0.9rem;
+  }
+
+  .water-stats-large {
+    font-size: 0.8rem;
+  }
+
+  .input-row input {
+    width: 80px;
+    font-size: 14px;
+  }
+
+  .quick-buttons button {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+  }
+
+  .add-button {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .history-grid-large {
+    gap: 4px;
+  }
+
+  .history-item-large {
+    max-width: 35px;
+  }
+
+  .hist-bar-outer {
+    height: 60px;
+  }
 }
 
