@@ -18,9 +18,10 @@ function Login({ onLogin, openReset }) {
     setError('');
     try {
       const res = await authAPI.login(form);
-      onLogin(res.data);
+      const data = res.data || res;
+      onLogin(data);
     } catch (err) {
-      const msg = err?.response?.data?.message || 'Login failed';
+      const msg = err?.response?.data?.message || err?.message || 'Login failed';
       setError(msg);
     }
     setLoading(false);
@@ -45,9 +46,10 @@ function Login({ onLogin, openReset }) {
     setError('');
     try {
       const res = await authAPI.loginWithOtp({ email: form.email, otp });
-      onLogin(res.data);
+      const data = res.data || res;
+      onLogin(data);
     } catch (err) {
-      const msg = err?.response?.data?.message || 'OTP login failed';
+      const msg = err?.response?.data?.message || err?.message || 'OTP login failed';
       setError(msg);
     }
     setLoading(false);

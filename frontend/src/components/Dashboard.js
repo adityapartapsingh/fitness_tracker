@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { workoutAPI } from '../api/workoutAPI';
+import { workoutAPI } from '../api/client';
 import WorkoutForm from './WorkoutForm';
 import WorkoutList from './WorkoutList';
 import ProgressCharts from './ProgressCharts';
@@ -19,10 +19,12 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     const fetchWorkouts = async () => {
         setLoading(true);
         try {
-            const response = await workoutAPI.getAllWorkouts();
-            setWorkouts(response.data);
+            const response = await workoutAPI.getAll();
+            // The response from client.js is already the data (response interceptor extracts it)
+            setWorkouts(response.data || []);
         } catch (error) {
             console.error('Error fetching workouts:', error);
+            setWorkouts([]);
         }
         setLoading(false);
     };
@@ -30,7 +32,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     const fetchStats = async () => {
         try {
             const response = await workoutAPI.getStats();
-            setStats(response.data);
+            setStats(response.data || null);
         } catch (error) {
             console.error('Error fetching stats:', error);
         }
@@ -45,7 +47,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
 
     const handleAddWorkout = async (workout) => {
         try {
-            await workoutAPI.createWorkout(workout);
+            await workoutAPI.create(workout);
             fetchWorkouts();
             fetchStats();
         } catch (error) {
@@ -55,7 +57,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
 
     const handleDeleteWorkout = async (id) => {
         try {
-            await workoutAPI.deleteWorkout(id);
+            await workoutAPI.delete(id);
             fetchWorkouts();
             fetchStats();
         } catch (error) {
@@ -64,7 +66,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     };
 
     const getStreakInfo = () => {
-        if (workouts.length === 0) {
+        if (!workouts || !Array.isArray(workouts) || workouts.length === 0) {
             return { currentStreak: 0, longestStreak: 0, streakPoints: 0 };
         }
         const sortedWorkouts = [...workouts].sort((a, b) => new Date(b.date) - new Date(a.date));

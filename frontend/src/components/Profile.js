@@ -29,7 +29,8 @@ function Profile() {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const data = await profileAPI.getProfile();
+      const response = await profileAPI.getProfile();
+      const data = response.data || response;
       setProfile({
         height: data.height || '',
         weight: data.weight || '',
@@ -47,7 +48,8 @@ function Profile() {
 
   const fetchTodayWater = async () => {
     try {
-      const data = await profileAPI.getTodayWaterIntake();
+      const response = await profileAPI.getTodayWaterIntake();
+      const data = response.data || response;
       setTodayWater(data);
     } catch (error) {
       console.error('Error fetching water intake:', error);
@@ -56,7 +58,8 @@ function Profile() {
 
   const fetchWaterHistory = async () => {
     try {
-      const data = await profileAPI.getWaterHistory();
+      const response = await profileAPI.getWaterHistory();
+      const data = response.data || response;
       setWaterHistory(data);
     } catch (error) {
       console.error('Error fetching water history:', error);
@@ -65,7 +68,8 @@ function Profile() {
 
   const calculateBMI = async () => {
     try {
-      const data = await profileAPI.calculateBMI();
+      const response = await profileAPI.calculateBMI();
+      const data = response.data || response;
       setBmi(data);
     } catch (error) {
       setError(error.message);

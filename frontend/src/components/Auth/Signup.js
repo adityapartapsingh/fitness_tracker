@@ -51,10 +51,11 @@ function Signup({ onSignup }) {
     try {
       const res = await authAPI.verifyOtp({ email: form.email, otp });
       setStep('success');
+      const data = res.data || res;
       // Redirect to dashboard after 1.5 seconds
-      setTimeout(() => onSignup(res.data), 1500);
+      setTimeout(() => onSignup(data), 1500);
     } catch (err) {
-      setError(err?.response?.data?.message || 'OTP verification failed');
+      setError(err?.response?.data?.message || err?.message || 'OTP verification failed');
     }
     setLoading(false);
   };

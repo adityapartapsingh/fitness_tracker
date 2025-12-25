@@ -11,8 +11,9 @@ function WaterWidget() {
 
   const fetchToday = async () => {
     try {
-      const data = await profileAPI.getTodayWaterIntake();
-      // API returns { todayIntake, goal, percentage }
+      const response = await profileAPI.getTodayWaterIntake();
+      // API returns { success, message, data: { todayIntake, goal, percentage } }
+      const data = response.data || response;
       setToday(data);
     } catch (err) {
       console.error('Failed to fetch today water', err);
@@ -26,7 +27,8 @@ function WaterWidget() {
 
   const fetchHistory = async () => {
     try {
-      const data = await profileAPI.getWaterHistory();
+      const response = await profileAPI.getWaterHistory();
+      const data = response.data || response;
       setHistory(data);
     } catch (err) {
       console.error('Failed to fetch water history', err);
