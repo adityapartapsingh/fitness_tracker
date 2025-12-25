@@ -100,7 +100,7 @@ npm start
 ```
 ✅ MongoDB Atlas
    - Cloud database setup
-   - User: adityapartapsingh92_db_user
+   - User: YOUR_MONGODB_USER (set in backend/.env)
    - Database: fitness_tracker
    - Auto-connected
 ```
@@ -306,8 +306,8 @@ Try adding these to see charts work:
 ### MongoDB Atlas Setup (Already Done)
 ```
 Host:     fitnesstracker.mongodb.net
-User:     adityapartapsingh92_db_user
-Password: rJpnM19withuV4wp
+User:     YOUR_MONGODB_USER (set in backend/.env)
+Password: YOUR_MONGODB_PASSWORD (set in backend/.env)
 Database: fitness_tracker
 Status:   ✅ Connected & Ready
 ```

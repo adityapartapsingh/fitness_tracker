@@ -135,8 +135,8 @@ npm start
 ## 🔐 MongoDB Atlas Configuration
 
 - **Database**: fitness_tracker
-- **User**: adityapartapsingh92_db_user
-- **Password**: rJpnM19withuV4wp
+- **User**: YOUR_MONGODB_USER (set in backend/.env)
+- **Password**: YOUR_MONGODB_PASSWORD (set in backend/.env)
 - **Connection String**: Already configured in `.env`
 - **Status**: ✅ Ready to use
 

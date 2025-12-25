@@ -1,252 +1,58 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
 require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 
+// Import configuration and middleware
+const { connectMongoDB } = require('./config/database');
+const { PORT } = require('./config/constants');
+const errorHandler = require('./middleware/errorHandler');
+
+// Import routes
+const authRoutes = require('./routes/authRoutes');
+const profileRoutes = require('./routes/profileRoutes');
+const workoutRoutes = require('./routes/workoutRoutes');
+const aiRoutes = require('./routes/aiRoutes');
+const authMiddleware = require('./middleware/authMiddleware');
+
+// Initialize app
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// MongoDB Connection
-// Try MongoDB Atlas first, fall back to local MongoDB if needed
-const MONGODB_ATLAS_URI = `mongodb+srv://adityapartapsingh92_db_user:rJpnM19withuV4wp@cluster0.izjhalr.mongodb.net/?appName=Cluster0`;
-const MONGODB_LOCAL_URI = 'mongodb://localhost:27017/fitness_tracker';
-const MONGODB_URI = process.env.MONGODB_URI || MONGODB_ATLAS_URI;
-
-// Connect to MongoDB with automatic reconnection
-let mongoConnected = false;
-
-const connectMongoDB = () => {
-  mongoose.connect(MONGODB_URI, {
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-    retryWrites: true,
-    w: 'majority',
-  })
-    .then(() => {
-      mongoConnected = true;
-      console.log('✅ MongoDB connected successfully');
-    })
-    .catch((err) => {
-      mongoConnected = false;
-      console.log('⚠️  MongoDB connection error (will retry):', err.message);
-      // Retry connection every 5 seconds
-      setTimeout(connectMongoDB, 5000);
-    });
-};
-
+// Connect to MongoDB
 connectMongoDB();
 
-// Models
-const Workout = require('./models/Workout');
-const User = require('./models/User');
-
-// Auth
-const jwt = require('jsonwebtoken');
-const authRoutes = require('./routes/authRoutes');
-
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecretkey';
-
-// Auth middleware
-const authMiddleware = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith('Bearer ')) return res.status(401).json({ message: 'Unauthorized' });
-  const token = auth.split(' ')[1];
-  try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    req.user = payload;
-    next();
-  } catch (err) {
-    return res.status(401).json({ message: 'Invalid token' });
-  }
-};
-
-// Use Auth Routes
-app.use('/api/auth', authRoutes);
-
-// Use Profile Routes
-const profileRoutes = require('./routes/profileRoutes');
-app.use('/api/user', profileRoutes);
-
-// Use AI Routes
-const aiRoutes = require('./routes/aiRoutes');
-app.use('/api/ai', authMiddleware, aiRoutes);
-
 // Routes
-
-// GET all workouts
-app.get('/api/workouts', authMiddleware, async (req, res) => {
-  try {
-    const workouts = await Workout.find({ user: req.user.id }).sort({ date: -1 });
-    res.json(workouts);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// GET workout by ID
-app.get('/api/workouts/:id', authMiddleware, async (req, res) => {
-  try {
-    const workout = await Workout.findById(req.params.id);
-    if (!workout) return res.status(404).json({ message: 'Workout not found' });
-    if (workout.user && workout.user.toString() !== req.user.id) return res.status(404).json({ message: 'Workout not found' });
-    res.json(workout);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// CREATE new workout
-app.post('/api/workouts', authMiddleware, async (req, res) => {
-  const { exerciseName, duration, calories, reps, weight, date, notes } = req.body;
-
-  const workout = new Workout({
-    user: req.user.id,
-    exerciseName,
-    duration,
-    calories,
-    reps,
-    weight,
-    date: date || new Date(),
-    notes,
-  });
-
-  try {
-    const newWorkout = await workout.save();
-    // Update user's streak information
-    try {
-      const user = await User.findById(req.user.id);
-      if (user) {
-        const pointsPerDay = 10; // points awarded per day for maintaining streak
-
-        // Normalize dates to start of day (UTC) for comparison
-        const workoutDate = new Date(newWorkout.date);
-        workoutDate.setHours(0, 0, 0, 0);
-
-        let lastDate = null;
-        if (user.lastWorkoutDate) {
-          lastDate = new Date(user.lastWorkoutDate);
-          lastDate.setHours(0, 0, 0, 0);
-        }
-
-        if (!lastDate) {
-          // First recorded workout for this user
-          user.currentStreak = 1;
-          user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
-          user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
-          user.lastWorkoutDate = workoutDate;
-        } else {
-          const diffMs = workoutDate.getTime() - lastDate.getTime();
-          const diffDays = Math.round(diffMs / (24 * 60 * 60 * 1000));
-
-          if (diffDays === 0) {
-            // same day - no change to streak, but ensure lastWorkoutDate is set
-            user.lastWorkoutDate = lastDate; // keep as-is
-          } else if (diffDays === 1) {
-            // consecutive day - increment streak
-            user.currentStreak = (user.currentStreak || 0) + 1;
-            user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
-            user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
-            user.lastWorkoutDate = workoutDate;
-          } else if (diffDays > 1) {
-            // break in streak - reset to 1 (today)
-            user.currentStreak = 1;
-            user.longestStreak = Math.max(user.longestStreak || 0, user.currentStreak);
-            user.streakPoints = (user.streakPoints || 0) + pointsPerDay;
-            user.lastWorkoutDate = workoutDate;
-          } else if (diffDays < 0) {
-            // workout date is earlier than last recorded workout - do not modify streak
-            // no-op
-          }
-        }
-
-        await user.save();
-      }
-    } catch (streakErr) {
-      console.error('Failed to update user streak:', streakErr);
-      // Do not block workout creation on streak update failure
-    }
-
-    res.status(201).json(newWorkout);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// UPDATE workout
-app.put('/api/workouts/:id', authMiddleware, async (req, res) => {
-  try {
-    const workout = await Workout.findById(req.params.id);
-    if (!workout) return res.status(404).json({ message: 'Workout not found' });
-    if (workout.user && workout.user.toString() !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
-
-    if (req.body.exerciseName) workout.exerciseName = req.body.exerciseName;
-    if (req.body.duration) workout.duration = req.body.duration;
-    if (req.body.calories) workout.calories = req.body.calories;
-    if (req.body.reps) workout.reps = req.body.reps;
-    if (req.body.weight) workout.weight = req.body.weight;
-    if (req.body.date) workout.date = req.body.date;
-    if (req.body.notes) workout.notes = req.body.notes;
-
-    const updatedWorkout = await workout.save();
-    res.json(updatedWorkout);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// DELETE workout
-app.delete('/api/workouts/:id', authMiddleware, async (req, res) => {
-  try {
-    const workout = await Workout.findById(req.params.id);
-    if (!workout) return res.status(404).json({ message: 'Workout not found' });
-    if (workout.user && workout.user.toString() !== req.user.id) return res.status(403).json({ message: 'Forbidden' });
-
-    await Workout.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Workout deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// GET workout statistics
-app.get('/api/stats/summary', authMiddleware, async (req, res) => {
-  try {
-    const workouts = await Workout.find({ user: req.user.id });
-    const totalWorkouts = workouts.length;
-    const totalCalories = workouts.reduce((sum, w) => sum + (w.calories || 0), 0);
-    const totalDuration = workouts.reduce((sum, w) => sum + (w.duration || 0), 0);
-    const avgCalories = totalWorkouts > 0 ? totalCalories / totalWorkouts : 0;
-
-    res.json({
-      totalWorkouts,
-      totalCalories,
-      totalDuration,
-      avgCalories,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+app.use('/api/auth', authRoutes);
+app.use('/api/user', profileRoutes);
+app.use('/api/workouts', workoutRoutes);
+app.use('/api/ai', authMiddleware, aiRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'Server running',
-    mongodb: mongoConnected ? 'Connected' : 'Disconnected - retrying...',
     timestamp: new Date(),
+    environment: process.env.NODE_ENV || 'development',
   });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+// Global error handling middleware (must be last)
+app.use(errorHandler);
+
+// 404 Not Found handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
 });
 
-const PORT = process.env.PORT || 5000;
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📝 Environment: ${process.env.NODE_ENV || 'development'}`);
 });

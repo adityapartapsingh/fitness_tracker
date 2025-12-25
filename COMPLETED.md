@@ -137,8 +137,8 @@ GET    /api/stats/summary         → Fitness statistics
 
 ### Database
 - **MongoDB Atlas** - Cloud database
-- **User**: adityapartapsingh92_db_user
-- **Database**: fitness_tracker
+-- **User**: YOUR_MONGODB_USER (set in backend/.env)
+-- **Database**: fitness_tracker
 
 ---
 
@@ -186,8 +186,8 @@ GET    /api/stats/summary         → Fitness statistics
 
 Your database is already configured:
 - **Connection String**: In `backend/.env`
-- **User**: adityapartapsingh92_db_user
-- **Password**: rJpnM19withuV4wp
+- **User**: YOUR_MONGODB_USER (set in backend/.env)
+- **Password**: YOUR_MONGODB_PASSWORD (set in backend/.env)
 - **Status**: ✅ Ready to use
 - **Auto-connected**: On server start
 

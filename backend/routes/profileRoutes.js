@@ -1,19 +1,22 @@
 const express = require('express');
 const profileController = require('../controllers/profileController');
-const { verifyToken } = require('../middleware/authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
+// Apply auth middleware to all routes
+router.use(authMiddleware);
+
 // Profile routes
-router.get('/profile', verifyToken, profileController.getProfile);
-router.put('/profile', verifyToken, profileController.updateProfile);
+router.get('/profile', profileController.getProfile);
+router.put('/profile', profileController.updateProfile);
 
 // Water intake routes
-router.post('/water', verifyToken, profileController.addWaterIntake);
-router.get('/water/today', verifyToken, profileController.getTodayWaterIntake);
-router.get('/water/history', verifyToken, profileController.getWaterHistory);
+router.post('/water', profileController.addWaterIntake);
+router.get('/water/today', profileController.getTodayWaterIntake);
+router.get('/water/history', profileController.getWaterHistory);
 
 // BMI calculation
-router.get('/bmi', verifyToken, profileController.calculateBMI);
+router.get('/bmi', profileController.calculateBMI);
 
 module.exports = router;

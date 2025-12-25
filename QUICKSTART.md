@@ -65,8 +65,8 @@ Here are some example workouts you can add:
 ## 🔧 Configuration
 
 ### MongoDB Atlas Connection
-Already configured with your credentials:
-- **User**: adityapartapsingh92_db_user
+Already configured with your credentials (set these in `backend/.env`):
+- **User**: YOUR_MONGODB_USER
 - **Database**: fitness_tracker
 - **Connection**: MongoDB Atlas (Cloud)
 
