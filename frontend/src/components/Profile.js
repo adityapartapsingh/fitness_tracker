@@ -238,12 +238,6 @@ function Profile() {
           </div>
         </div>
       </div>
-
-      {/* Water tracking moved to Dashboard */}
-      <div className="profile-card full-width">
-        <h2>💧 Daily Water Intake</h2>
-        <p>Water tracking and quick-add controls have been moved to the Dashboard for quick access.</p>
-      </div>
     </div>
   );
 }
