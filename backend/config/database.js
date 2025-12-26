@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Read URIs from environment variables. Do NOT hardcode credentials here.
+// Read URIs from environment variables. 
 const MONGODB_ATLAS_URI = process.env.MONGODB_ATLAS_URI || null;
 const MONGODB_LOCAL_URI = process.env.MONGODB_LOCAL_URI || 'mongodb://localhost:27017/fitness_tracker';
 

@@ -12,18 +12,13 @@ function Profile() {
   });
 
   const [bmi, setBmi] = useState(null);
-  const [todayWater, setTodayWater] = useState(0);
-  const [waterHistory, setWaterHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [edited, setEdited] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [waterAmount, setWaterAmount] = useState('250');
   const [error, setError] = useState('');
 
   useEffect(() => {
     fetchProfile();
-    fetchTodayWater();
-    fetchWaterHistory();
   }, []);
 
   const fetchProfile = async () => {
@@ -43,26 +38,6 @@ function Profile() {
       setError(error.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchTodayWater = async () => {
-    try {
-      const response = await profileAPI.getTodayWaterIntake();
-      const data = response.data || response;
-      setTodayWater(data);
-    } catch (error) {
-      console.error('Error fetching water intake:', error);
-    }
-  };
-
-  const fetchWaterHistory = async () => {
-    try {
-      const response = await profileAPI.getWaterHistory();
-      const data = response.data || response;
-      setWaterHistory(data);
-    } catch (error) {
-      console.error('Error fetching water history:', error);
     }
   };
 
@@ -106,27 +81,7 @@ function Profile() {
     }
   };
 
-  const handleAddWater = async () => {
-    try {
-      const amount = parseInt(waterAmount);
-      if (isNaN(amount) || amount <= 0) {
-        setError('Please enter a valid amount');
-        return;
-      }
-      await profileAPI.addWaterIntake(amount);
-      setWaterAmount('250');
-      setSuccessMessage('Water intake recorded!');
-      fetchTodayWater();
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const getWaterLevel = () => {
-    if (!todayWater.goal) return 0;
-    return Math.min((todayWater.todayIntake / todayWater.goal) * 100, 100);
-  };
+  // Note: water intake UI handled in `WaterWidget` component.
 
   const getBMIColor = (category) => {
     switch (category) {

@@ -1,3 +1,5 @@
+// lib/aiProviders.js
+
 // Simple AI provider adapter
 // Exports a single `requestAI` helper that normalizes calls to different providers.
 
@@ -23,6 +25,7 @@ async function requestAI(options = {}) {
   const { provider = 'openai', model, systemMessage, userMessage, apiKey, apiUrl } = options;
   const fetchFn = await getFetch();
 
+  // --- OpenAI Provider Logic ---
   if (provider === 'openai') {
     if (!apiKey) {
       return { error: 'OPENAI_API_KEY not provided', status: 500 };
@@ -58,17 +61,18 @@ async function requestAI(options = {}) {
     return { assistantText, raw: result };
   }
 
-  // Generic provider (e.g., Gemini-compatible endpoint)
-  // Expects `apiUrl` and `apiKey` to be provided (or set via env)
+  // --- Gemini / Generic Provider Logic ---
+  
   const endpoint = apiUrl || process.env.GEMINI_API_URL;
-  // Always require GEMINI_API_KEY for Gemini provider
   const key = apiKey || process.env.GEMINI_API_KEY;
+
   if (!endpoint) return { error: 'Provider API URL not configured', status: 500, message: 'Missing provider API URL' };
   if (!key) return { error: 'Provider API key not configured', status: 500, message: 'Missing provider API key (GEMINI_API_KEY)' };
 
-  // Always use gemini-1.5-flash as default model if not provided
+  // Default to Gemini 2.0 Flash if not specified
   const usedModel = model || process.env.GEMINI_MODEL || 'gemini-2.0-flash';
-  // Gemini v1beta: use system_instruction for system prompt, contents for user prompt
+  
+  // Gemini v1beta/v1 payload structure
   const payload = {
     ...(systemMessage ? {
       system_instruction: {
@@ -96,8 +100,22 @@ async function requestAI(options = {}) {
   }
 
   const result = await resp.json();
-  // Try common shapes
-  const assistantText = result.output?.[0]?.content?.[0]?.text || result.choices?.[0]?.message?.content || result.choices?.[0]?.text || JSON.stringify(result);
+
+  // --- FIXED PARSING LOGIC BELOW ---
+  let assistantText = '';
+
+  // 1. Check for standard Gemini "candidates" structure
+  if (result.candidates && result.candidates[0]?.content?.parts?.[0]?.text) {
+    assistantText = result.candidates[0].content.parts[0].text;
+  }
+  // 2. Fallback: Check for "output" (sometimes used in vertex) or "choices"
+  else {
+     assistantText = result.output?.[0]?.content?.[0]?.text || 
+                     result.choices?.[0]?.message?.content || 
+                     result.choices?.[0]?.text || 
+                     JSON.stringify(result); // Only stringify if nothing else matches
+  }
+
   return { assistantText, raw: result };
 }
 

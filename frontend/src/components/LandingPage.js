@@ -87,7 +87,7 @@ export default function LandingPage() {
           <div className={`nav-right ${mobileOpen ? "open" : ""}`}>
             <Link to="/program" className="nav-link">Programs</Link>
             <Link to="/pricing" className="nav-link">Pricing</Link>
-            <Link to="/auth/login" className="nav-link">Sign In</Link>
+            <Link to="/auth/login" className="nav-link"> Login</Link>
             <Link to="/auth/signup" className="btn btn-primary">Get Started</Link>
           </div>
         </div>

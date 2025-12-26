@@ -108,7 +108,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     return (
         <div className={`App ${darkMode ? 'dark-mode' : ''}`}>
             <nav className="nav-tabs">
-                <div className="nav-title">📊 Exercise Progress Tracker</div>
+                <div className="nav-title">📊 EPT</div>
                 <div className="nav-buttons">
                     <button
                         className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
