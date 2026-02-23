@@ -14,8 +14,8 @@ const sendEmail = async (email, otpOrOptions) => {
         tls: {
           rejectUnauthorized: false
         },
-        connectionTimeout: 10000,
-        socketTimeout: 10000,
+        connectionTimeout: 60000,
+        socketTimeout: 60000,
         pool: {
           maxConnections: 5,
           maxMessages: 100
