@@ -14,7 +14,7 @@ function AuthPage({ onAuthSuccess }) {
     if (mode && mode !== authMode) {
       setAuthMode(mode);
     }
-  }, [mode]);
+  }, [mode,authMode]);
 
   const handleModeChange = (newMode) => {
     setAuthMode(newMode);

@@ -104,7 +104,6 @@ function Profile() {
       {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
       <div className="profile-grid">
-        {/* Profile Information Section */}
         <div className="profile-card">
           <h2>📋 Profile Information</h2>
           
@@ -162,7 +161,6 @@ function Profile() {
           )}
         </div>
 
-        {/* BMI Calculator Section */}
         <div className="profile-card">
           <h2>📊 BMI Calculator</h2>
           

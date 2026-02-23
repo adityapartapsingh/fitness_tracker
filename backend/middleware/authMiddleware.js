@@ -2,18 +2,12 @@ const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/constants');
 const { sendError } = require('../utils/responseHandler');
 
-/**
- * Authentication middleware - Validates JWT tokens
- */
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  // Check if authorization header exists
   if (!authHeader) {
     return sendError(res, 'Missing authorization header', 401);
   }
-
-  // Check if token format is correct (Bearer <token>)
   if (!authHeader.startsWith('Bearer ')) {
     return sendError(res, 'Invalid authorization format', 401);
   }

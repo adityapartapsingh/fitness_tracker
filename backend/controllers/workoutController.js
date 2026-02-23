@@ -2,17 +2,13 @@ const Workout = require('../models/Workout');
 const { sendSuccess, sendError } = require('../utils/responseHandler');
 const asyncHandler = require('../middleware/asyncHandler');
 
-/**
- * Get all workouts for authenticated user
- */
+
 exports.getAllWorkouts = asyncHandler(async (req, res) => {
   const workouts = await Workout.find({ user: req.user.id }).sort({ date: -1 });
   sendSuccess(res, workouts, 'Workouts retrieved successfully');
 });
 
-/**
- * Get workout by ID
- */
+
 exports.getWorkoutById = asyncHandler(async (req, res) => {
   const workout = await Workout.findById(req.params.id);
 
@@ -20,7 +16,6 @@ exports.getWorkoutById = asyncHandler(async (req, res) => {
     return sendError(res, 'Workout not found', 404);
   }
 
-  // Verify ownership
   if (workout.user.toString() !== req.user.id) {
     return sendError(res, 'Unauthorized', 403);
   }
@@ -28,13 +23,10 @@ exports.getWorkoutById = asyncHandler(async (req, res) => {
   sendSuccess(res, workout, 'Workout retrieved successfully');
 });
 
-/**
- * Create new workout
- */
+
 exports.createWorkout = asyncHandler(async (req, res) => {
   const { exerciseName, duration, calories, reps, weight, notes } = req.body;
 
-  // Validation
   if (!exerciseName || !duration || !calories) {
     return sendError(res, 'exerciseName, duration, and calories are required', 400);
   }
@@ -53,9 +45,7 @@ exports.createWorkout = asyncHandler(async (req, res) => {
   sendSuccess(res, savedWorkout, 'Workout created successfully', 201);
 });
 
-/**
- * Update workout
- */
+
 exports.updateWorkout = asyncHandler(async (req, res) => {
   const workout = await Workout.findById(req.params.id);
 
@@ -63,14 +53,12 @@ exports.updateWorkout = asyncHandler(async (req, res) => {
     return sendError(res, 'Workout not found', 404);
   }
 
-  // Verify ownership
   if (workout.user.toString() !== req.user.id) {
     return sendError(res, 'Unauthorized', 403);
   }
 
   const { exerciseName, duration, calories, reps, weight, notes } = req.body;
 
-  // Update fields if provided
   if (exerciseName) workout.exerciseName = exerciseName;
   if (duration) workout.duration = duration;
   if (calories) workout.calories = calories;
@@ -82,9 +70,7 @@ exports.updateWorkout = asyncHandler(async (req, res) => {
   sendSuccess(res, updatedWorkout, 'Workout updated successfully');
 });
 
-/**
- * Delete workout
- */
+
 exports.deleteWorkout = asyncHandler(async (req, res) => {
   const workout = await Workout.findById(req.params.id);
 
@@ -92,7 +78,6 @@ exports.deleteWorkout = asyncHandler(async (req, res) => {
     return sendError(res, 'Workout not found', 404);
   }
 
-  // Verify ownership
   if (workout.user.toString() !== req.user.id) {
     return sendError(res, 'Unauthorized', 403);
   }
@@ -101,9 +86,7 @@ exports.deleteWorkout = asyncHandler(async (req, res) => {
   sendSuccess(res, null, 'Workout deleted successfully');
 });
 
-/**
- * Get workout statistics
- */
+
 exports.getStatistics = asyncHandler(async (req, res) => {
   const workouts = await Workout.find({ user: req.user.id });
 

@@ -20,7 +20,6 @@ const sendPush = async (subscription, payload) => {
     const result = await webpush.sendNotification(subscription, JSON.stringify(payload));
     return { success: true, result };
   } catch (err) {
-    // Some errors are expected when subscription is expired/invalid
     console.error('Push send failed:', err && err.message ? err.message : err);
     throw err;
   }

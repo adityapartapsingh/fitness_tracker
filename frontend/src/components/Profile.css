@@ -512,8 +512,6 @@
   color: #e0e0e0;
 }
 
-/* Simplified: Water-related styles moved to WaterWidget.css
-   Keep only a small spacer class for profile layout. */
 .profile-water-space {
   margin-bottom: 1.6rem;
 }

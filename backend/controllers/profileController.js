@@ -57,11 +57,9 @@ exports.addWaterIntake = asyncHandler(async (req, res) => {
     return sendError(res, 'User not found', 404);
   }
 
-  // Get today's date
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Check if water intake already exists for today
   const existingIntake = user.waterIntake.find(intake => {
     const intakeDate = new Date(intake.date);
     intakeDate.setHours(0, 0, 0, 0);
@@ -76,7 +74,6 @@ exports.addWaterIntake = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  // Get today's total
   const todayTotal = user.waterIntake.find(intake => {
     const intakeDate = new Date(intake.date);
     intakeDate.setHours(0, 0, 0, 0);
@@ -89,9 +86,7 @@ exports.addWaterIntake = asyncHandler(async (req, res) => {
   }, 'Water intake recorded successfully', 201);
 });
 
-/**
- * GET TODAY'S WATER INTAKE
- */
+
 exports.getTodayWaterIntake = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
@@ -115,9 +110,7 @@ exports.getTodayWaterIntake = asyncHandler(async (req, res) => {
   }, 'Water intake retrieved successfully');
 });
 
-/**
- * CALCULATE BMI
- */
+
 exports.calculateBMI = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
@@ -129,7 +122,6 @@ exports.calculateBMI = asyncHandler(async (req, res) => {
     return sendError(res, 'Please update your height and weight first', 400);
   }
 
-  // BMI = weight (kg) / height (m)^2
   const heightInMeters = user.height / 100;
   const bmi = user.weight / (heightInMeters * heightInMeters);
 
@@ -152,9 +144,7 @@ exports.calculateBMI = asyncHandler(async (req, res) => {
   }, 'BMI calculated successfully');
 });
 
-/**
- * GET WATER HISTORY (last 7 days)
- */
+
 exports.getWaterHistory = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
@@ -185,9 +175,7 @@ exports.getWaterHistory = asyncHandler(async (req, res) => {
   sendSuccess(res, last7Days, 'Water history retrieved successfully');
 });
 
-/**
- * SUBSCRIBE TO PUSH NOTIFICATIONS
- */
+
 exports.subscribePush = asyncHandler(async (req, res) => {
   const subscription = req.body.subscription;
 
@@ -196,7 +184,6 @@ exports.subscribePush = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
   if (!user) return sendError(res, 'User not found', 404);
 
-  // Avoid duplicates (by endpoint)
   const exists = user.pushSubscriptions.some(s => s && s.endpoint === subscription.endpoint);
   if (!exists) {
     user.pushSubscriptions.push(subscription);
@@ -206,9 +193,7 @@ exports.subscribePush = asyncHandler(async (req, res) => {
   sendSuccess(res, null, 'Subscribed to push notifications');
 });
 
-/**
- * UNSUBSCRIBE FROM PUSH NOTIFICATIONS
- */
+
 exports.unsubscribePush = asyncHandler(async (req, res) => {
   const { endpoint } = req.body;
   if (!endpoint) return sendError(res, 'Subscription endpoint is required', 400);

@@ -30,9 +30,7 @@ function Signup({ onSignup }) {
     setError('');
     try {
       const res = await authAPI.register(form);
-      // registration creates user and sends OTP
       setStep('verify');
-      // start 5-minute timer
       setSecondsLeft(5 * 60);
     } catch (err) {
       console.error('Signup error raw:', err);
@@ -52,7 +50,6 @@ function Signup({ onSignup }) {
       const res = await authAPI.verifyOtp({ email: form.email, otp });
       setStep('success');
       const data = res.data || res;
-      // Redirect to dashboard after 1.5 seconds
       setTimeout(() => onSignup(data), 1500);
     } catch (err) {
       setError(err?.response?.data?.message || err?.message || 'OTP verification failed');
@@ -71,8 +68,6 @@ function Signup({ onSignup }) {
     }
     setLoading(false);
   };
-
-  // countdown effect
   React.useEffect(() => {
     if (!secondsLeft) return;
     const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);

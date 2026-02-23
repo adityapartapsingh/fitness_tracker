@@ -8,7 +8,7 @@ function ResetPassword({ onReset }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [step, setStep] = useState('email'); // 'email' | 'verify'
+  const [step, setStep] = useState('email');
   const [secondsLeft, setSecondsLeft] = useState(0);
 
   const handleSendReset = async (e) => {
@@ -43,7 +43,6 @@ function ResetPassword({ onReset }) {
     setLoading(false);
   };
 
-  // countdown effect
   React.useEffect(() => {
     if (!secondsLeft) return;
     const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);

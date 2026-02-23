@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import './AIAssistantWidget.css'; // Make sure you created this file from the previous step!
+import './AIAssistantWidget.css'; 
 
-// --- Styles for the formatted response ---
 const markdownStyles = {
   container: {
     backgroundColor: '#f9fafb',
@@ -13,8 +12,6 @@ const markdownStyles = {
     color: '#374151',
     maxWidth: '100%',
     marginTop: '10px',
-    
-    // ✅ THIS FIXES THE NEW LINES
     whiteSpace: 'pre-wrap', 
     lineHeight: '1.6',
   },
@@ -26,8 +23,6 @@ const markdownStyles = {
     fontWeight: '700',
   },
 };
-
-// --- Component to render the AI text ---
 function FitnessPlanDisplay({ text }) {
   if (!text) return null;
   
@@ -40,7 +35,7 @@ function FitnessPlanDisplay({ text }) {
           strong: ({node, ...props}) => <strong style={{color: '#2563eb', fontWeight: 'bold'}} {...props} />,
           ul: ({node, ...props}) => <ul style={{paddingLeft: '20px', margin: '10px 0'}} {...props} />,
           li: ({node, ...props}) => <li style={{marginBottom: '5px'}} {...props} />,
-          p: ({node, ...props}) => <p style={{marginBottom: '10px'}} {...props} />, // Adds space between paragraphs
+          p: ({node, ...props}) => <p style={{marginBottom: '10px'}} {...props} />,
         }}
       >
         {text}
@@ -54,8 +49,6 @@ const DEFAULT_PLACEHOLDER = 'Ask your AI trainer...';
 function AIAssistantWidget({ userToken }) {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
-  
-  // Initial message
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Hi! I am your AI fitness assistant. How can I help you today?' }
   ]);
@@ -63,10 +56,9 @@ function AIAssistantWidget({ userToken }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  // Refs
+  
   const chatEndRef = useRef(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (open && chatEndRef.current) {
       chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -76,16 +68,13 @@ function AIAssistantWidget({ userToken }) {
   const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-
-    // 1. Add User Message
     setMessages(msgs => [...msgs, { role: 'user', content: input }]);
     setLoading(true);
     setError('');
     const originalInput = input;
-    setInput(''); // Clear input
+    setInput('');
 
     try {
-      // 2. Call backend API (secure, no API key in frontend)
       const res = await fetch('/api/ai/workout', {
         method: 'POST',
         headers: {
@@ -98,7 +87,6 @@ function AIAssistantWidget({ userToken }) {
       if (!res.ok) throw new Error('Failed to fetch response');
 
       const data = await res.json();
-      // 3. Extract CLEAN Text
       let aiText = '';
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
         aiText = data.candidates[0].content.parts[0].text;
@@ -107,8 +95,6 @@ function AIAssistantWidget({ userToken }) {
       } else {
         aiText = "I couldn't generate a response. Please try again.";
       }
-
-      // 4. Add AI Message
       setMessages(msgs => [...msgs, { role: 'assistant', content: aiText }]);
 
     } catch (err) {
@@ -121,40 +107,32 @@ function AIAssistantWidget({ userToken }) {
 
   return (
     <>
-      {/* Floating Button */}
       <div className={`ai-assistant-fab${open ? ' ai-assistant-fab-hide' : ''}`} onClick={() => setOpen(true)}>
         <span role="img" aria-label="AI">🤖</span>
       </div>
-
-      {/* Chat Window */}
       {open && (
         <div className="ai-assistant-chatbox">
-          
-          {/* Header */}
+       
           <div className="ai-assistant-header">
             <span>AI Assistant</span>
             <button className="ai-assistant-close" onClick={() => setOpen(false)}>×</button>
           </div>
 
-          {/* Messages List */}
           <div className="ai-assistant-messages">
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                 
                 {msg.role === 'user' ? (
-                  // USER MESSAGE (Blue Bubble)
                   <div className="ai-msg ai-msg-user">
                     {msg.content}
                   </div>
                 ) : (
-                  // AI MESSAGE (Formatted Markdown)
                   <FitnessPlanDisplay text={msg.content} />
                 )}
                 
               </div>
             ))}
 
-            {/* Loading Indicator */}
             {loading && (
               <div className="ai-msg ai-msg-assistant ai-msg-typing">
                 <span className="ai-typing-dots">
@@ -165,7 +143,6 @@ function AIAssistantWidget({ userToken }) {
             <div ref={chatEndRef} />
           </div>
 
-          {/* Input Area */}
           <form className="ai-assistant-input-row" onSubmit={handleSend}>
             <input
               type="text"

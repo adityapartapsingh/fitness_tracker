@@ -1,21 +1,12 @@
 const User = require('../models/User');
 const Workout = require('../models/Workout');
 
-/**
- * POST /api/ai/workout
- * AI Personal Trainer endpoint
- * Sends user profile + prompt to OpenAI API and returns personalized workout recommendation
- * 
- * Body: { prompt: string }
- * Example: { "prompt": "I have back pain and only 20 minutes. Give me a safe workout plan." }
- */
 exports.generateWorkoutPlan = async (req, res) => {
-  // Only Gemini provider is supported
+
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   const GEMINI_API_URL = process.env.GEMINI_API_URL;
   const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
-  // Validate Gemini key and URL
   if (!GEMINI_API_KEY || !GEMINI_API_URL) {
     return res.status(500).json({ 
       message: 'Gemini provider requires GEMINI_API_KEY and GEMINI_API_URL in .env.'
@@ -30,7 +21,6 @@ exports.generateWorkoutPlan = async (req, res) => {
   }
 
   try {
-    // Load user's profile and recent workouts
     const user = await User.findById(req.user.id)
       .select('-password -otpHash -passwordResetToken -passwordResetOtpHash')
       .lean();
@@ -44,7 +34,6 @@ exports.generateWorkoutPlan = async (req, res) => {
       .limit(7)
       .lean();
 
-    // Build profile context for the AI
     const profileContext = {
       id: user._id,
       name: user.name,
@@ -67,9 +56,6 @@ exports.generateWorkoutPlan = async (req, res) => {
       notes: w.notes || ''
     }));
 
-    // System prompt for the AI trainer
-    // System prompt for the AI trainer
-    // System prompt for the AI trainer
     const systemMessage = `You are a concise, efficiency-focused AI personal trainer.
     Rules:
     1. GREETINGS: If the user input is just "hi" or "hello", respond with a brief greeting and ask how you can assist with their fitness goals."
@@ -103,10 +89,7 @@ exports.generateWorkoutPlan = async (req, res) => {
     28. talk with user in a friendly manner. like if user ask how are you, respond with "I'm doing great! Ready to help you crush your fitness goals. How can I assist you today?", byye respond with "Goodbye! Stay active and healthy!" something like this related to fitness only.`;
 
     const userMessage = `User profile: ${JSON.stringify(profileContext)}\nRecent workouts (up to 7): ${JSON.stringify(recent)}\nUser request: ${userPrompt}`;
-
-    // Delegate to provider adapter
     const aiProviders = require('../lib/aiProviders');
-    // Only use Gemini provider
     const provider = 'gemini';
     const model = GEMINI_MODEL;
     const apiKey = GEMINI_API_KEY;
@@ -128,12 +111,7 @@ exports.generateWorkoutPlan = async (req, res) => {
   }
 };
 
-/**
- * GET /api/ai/status
- * Check if AI trainer is available (OpenAI API key configured)
- */
 exports.checkAIStatus = async (req, res) => {
-  // Only Gemini provider is supported
   const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
   const GEMINI_API_URL = process.env.GEMINI_API_URL;
   const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';

@@ -20,7 +20,6 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
         setLoading(true);
         try {
             const response = await workoutAPI.getAll();
-            // The response from client.js is already the data (response interceptor extracts it)
             setWorkouts(response.data || []);
         } catch (error) {
             console.error('Error fetching workouts:', error);

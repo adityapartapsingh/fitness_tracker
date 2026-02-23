@@ -1,61 +1,24 @@
 const nodemailer = require('nodemailer');
 
-/**
- * Send email (OTP or custom content)
- * @param {string} email - Recipient email address
- * @param {string|Object} otpOrOptions - OTP string OR custom mail options
- */
 const sendEmail = async (email, otpOrOptions) => {
   try {
     let transporter;
 
-    // ===============================
-    // Create transporter
-    // ===============================
     if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-      // Gmail (Recommended for production)
       transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD,
         },
-      });
-    } else if (
-      process.env.SMTP_HOST &&
-      process.env.SMTP_USER &&
-      process.env.SMTP_PASS
-    ) {
-      // Custom SMTP
-      transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: process.env.SMTP_PORT || 587,
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-      });
-    } else {
-      // Ethereal (Development / Testing)
-      const testAccount = await nodemailer.createTestAccount();
-      transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
+        tls:{
+          rejectUnauthorized: false
+        }
       });
     }
 
-    // ===============================
-    // Email content
-    // ===============================
     let mailOptions;
 
-    // ---- OTP Email (Professional Template) ----
     if (typeof otpOrOptions === 'string') {
       const otp = otpOrOptions;
 
@@ -161,15 +124,15 @@ Fitness Tracker Team
       throw new Error('Invalid email content');
     }
 
-    // ===============================
-    // Send email
-    // ===============================
-    const info = await transporter.sendMail(mailOptions);
-
-    // Ethereal preview URL
-    if (nodemailer.getTestMessageUrl(info)) {
-      console.log('📧 Email Preview URL:', nodemailer.getTestMessageUrl(info));
-    }
+    const info = await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          reject(new Error(`Failed to send email: ${error.message}`));
+        } else {
+          resolve(info);
+        }
+      });
+    });
 
     console.log('✅ Email sent successfully to:', email);
     return { success: true, messageId: info.messageId };

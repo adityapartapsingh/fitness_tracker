@@ -1,6 +1,3 @@
-/**
- * Refactored API service with centralized request handling
- */
 
 import axios from 'axios';
 import API_BASE_URL, { API_ENDPOINTS } from '../constants/apiConstants';
@@ -14,7 +11,6 @@ const apiClient = axios.create({
   },
 });
 
-// Interceptor to add token to requests
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -23,7 +19,6 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor to handle common errors
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {

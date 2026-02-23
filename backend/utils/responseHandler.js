@@ -1,6 +1,3 @@
-/**
- * Unified response handler for consistent API responses
- */
 
 const sendSuccess = (res, data, message = 'Success', statusCode = 200) => {
   res.status(statusCode).json({

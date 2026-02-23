@@ -55,14 +55,7 @@ function Login({ onLogin, openReset }) {
     setLoading(false);
   };
 
-  const handleResend = async () => {
-    // kept for compatibility but use authAPI.resendOtp
-    await handleSendOtp();
-  };
 
-  // (forgot-password UI removed; use reset flow from AuthPage if needed)
-
-  // countdown effect
   React.useEffect(() => {
     if (!secondsLeft) return;
     const t = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
@@ -86,7 +79,6 @@ function Login({ onLogin, openReset }) {
           <label>Password</label>
           <input name="password" type="password" value={form.password} onChange={handleChange} required />
           <button type="submit" className="auth-btn" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
-          {/* Forgot-password removed from login card */}
         </form>
       )}
 

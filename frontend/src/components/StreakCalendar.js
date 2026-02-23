@@ -57,7 +57,7 @@ function StreakCalendar({ workouts }) {
     }
 
     return calendar;
-  }, [workouts, currentYear, currentMonth, today]);
+  }, [workouts, currentYear, currentMonth]);
 
   const handlePrevMonth = () => {
     if (currentMonth === 0) {

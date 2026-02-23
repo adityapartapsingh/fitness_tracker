@@ -5,63 +5,36 @@ import "./LandingPage.css";
 // --- DATA CONSTANTS ---
 const PROGRAMS = [
   {
-    title: "Weight Loss",
-    desc: "Shed fat and boost metabolism with high-intensity interval training tailored for rapid results.",
+    title: "Workout Tracking",
+    desc: "Log your exercises, sets, reps, and weight with our intuitive tracking interface. Monitor your progress in real-time.",
     img: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80"
   },
   {
-    title: "Muscle Building",
-    desc: "Hypertrophy-focused routines designed to maximize muscle growth and strength gains.",
+    title: "AI Fitness Coach",
+    desc: "Get personalized workout plans and fitness advice powered by AI. Your personal trainer in your pocket 24/7.",
     img: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80"
   },
   {
-    title: "Strength & Mobility",
-    desc: "Build functional strength while improving flexibility and joint health for longevity.",
+    title: "Progress Analytics",
+    desc: "Visualize your fitness journey with detailed charts, statistics, and streak tracking to stay motivated.",
     img: "https://images.unsplash.com/photo-1599058945522-28d584b6f0ff?auto=format&fit=crop&w=800&q=80"
   }
 ];
 
 const TRANSFORMATIONS = [
   {
-    name: "Leslie Alexander",
-    result: "Lost 18kg in 4 months",
-    program: "Fat Loss Program",
+    name: "John Fitness Enthusiast",
+    result: "🔥 180+ Workouts Logged",
+    program: "Consistent Training",
     before: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=400&q=60",
     after: "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=400&q=60"
   },
   {
-    name: "Jacob Jones",
-    result: "Gained 5kg Muscle",
-    program: "Hypertrophy X",
+    name: "Sarah Active Member",
+    result: "💪 65-Day Workout Streak",
+    program: "Daily Tracking",
     before: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=400&q=60",
     after: "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=400&q=60"
-  }
-];
-
-const PRICING = [
-  {
-    plan: "Starter",
-    price: "999",
-    desc: "Perfect for beginners.",
-    features: ["Beginner programs", "Weekly tracking", "Community access"],
-    popular: false,
-    btn: "btn-outline"
-  },
-  {
-    plan: "Pro",
-    price: "1999",
-    desc: "For serious enthusiasts.",
-    features: ["Advanced workouts", "Nutrition plans", "Trainer support", "Daily check-ins"],
-    popular: true,
-    btn: "btn-primary"
-  },
-  {
-    plan: "Elite",
-    price: "3499",
-    desc: "1-on-1 Premium Coaching.",
-    features: ["1-on-1 Coaching", "Custom Diet", "Video Form Analysis", "Priority Support"],
-    popular: false,
-    btn: "btn-outline"
   }
 ];
 
@@ -74,7 +47,7 @@ export default function LandingPage() {
       {/* NAVBAR */}
       <nav className="site-nav">
         <div className="container nav-inner">
-          <Link to="/" className="brand">FitNix.</Link>
+          <Link to="/" className="brand">Fitness Tracker</Link>
           
           <button 
             className="nav-toggle" 
@@ -85,9 +58,7 @@ export default function LandingPage() {
           </button>
 
           <div className={`nav-right ${mobileOpen ? "open" : ""}`}>
-            <Link to="/program" className="nav-link">Programs</Link>
-            <Link to="/pricing" className="nav-link">Pricing</Link>
-            <Link to="/auth/login" className="nav-link"> Login</Link>
+            <Link to="/auth/login" className="nav-link">Login</Link>
             <Link to="/auth/signup" className="btn btn-primary">Get Started</Link>
           </div>
         </div>
@@ -97,29 +68,28 @@ export default function LandingPage() {
       <header className="hero">
         <div className="container hero-grid">
           <div className="hero-content">
-            <span className="badge badge-accent">⭐ Trusted by 2000+ Members</span>
-            <h1>Build Your <br /><span className="text-accent">Strongest Self</span></h1>
-            <p>FitNix helps you transform your body and mindset with expert-designed fitness programs and measurable results.</p>
+            <span className="badge badge-accent">⭐ Track • Achieve • Transform</span>
+            <h1>Your Personal <br /><span className="text-accent">Fitness Journal</span></h1>
+            <p>Log workouts, track progress, and achieve your fitness goals with our intelligent workout tracker powered by AI coaching.</p>
             
             <div style={{ display: 'flex', gap: '1rem' }}>
               <Link to="/auth/signup" className="btn btn-primary">Start Trial</Link>
-              <Link to="/program" className="btn btn-outline">View Programs</Link>
             </div>
 
             {/* Stats */}
             <div className="stats-section">
               <div className="stats-grid">
                 <div className="stat">
-                  <h3>160+</h3>
-                  <p>Trainers</p>
+                  <h3>500+</h3>
+                  <p>Active Users</p>
                 </div>
                 <div className="stat">
-                  <h3>2k+</h3>
-                  <p>Members</p>
+                  <h3>50k+</h3>
+                  <p>Workouts Logged</p>
                 </div>
                 <div className="stat">
-                  <h3>92%</h3>
-                  <p>Results</p>
+                  <h3>99%</h3>
+                  <p>Satisfaction</p>
                 </div>
               </div>
             </div>
@@ -139,8 +109,8 @@ export default function LandingPage() {
       <section className="section" id="programs">
         <div className="container">
           <div className="section-header">
-            <h2>Our <span className="text-accent">Programs</span></h2>
-            <p>Structured workouts designed by certified fitness experts for every goal.</p>
+          <h2>Key <span className="text-accent">Features</span></h2>
+          <p>Everything you need to track and improve your fitness journey.</p>
           </div>
           
           <div className="grid-3">
@@ -161,9 +131,10 @@ export default function LandingPage() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <h2>Real <span className="text-accent">Results</span></h2>
-            <p>See how FitNix has helped members transform their lives.</p>
+          <h2>Member <span className="text-accent">Success Stories</span></h2>
+          <p>See how our members stay consistent and achieve their fitness goals.</p>
           </div>
+          <p>See how our members stay consistent and achieve their fitness goals.</p>
 
           <div className="transform-grid">
             {TRANSFORMATIONS.map((t, index) => (
@@ -189,71 +160,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRICING SECTION */}
-      <section className="section" id="pricing">
-        <div className="container">
-          <div className="section-header">
-            <h2>Simple <span className="text-accent">Pricing</span></h2>
-            <p>No hidden fees. Cancel anytime.</p>
-          </div>
-
-          <div className="grid-3" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            {PRICING.map((plan, index) => (
-              <div key={index} className={`card pricing-card ${plan.popular ? 'popular' : ''}`}>
-                {plan.popular && <div className="badge badge-accent" style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)' }}>Most Popular</div>}
-                
-                <h3>{plan.plan}</h3>
-                <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>{plan.desc}</p>
-                
-                <div className="price">
-                  ₹{plan.price}<span>/mo</span>
-                </div>
-
-                <ul className="features">
-                  {plan.features.map((f, i) => (
-                    <li key={i}>{f}</li>
-                  ))}
-                </ul>
-
-                <Link to="/auth/signup" className={`btn ${plan.btn}`} style={{ textAlign: 'center' }}>
-                  Choose Plan
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* FOOTER */}
       <footer className="site-footer">
         <div className="container footer-grid">
           <div>
-            <Link to="/" className="brand">FitNix.</Link>
+            <Link to="/" className="brand">Fitness Tracker</Link>
             <p style={{ marginTop: '1rem', color: '#9ca3af' }}>
-              Train smarter. Live healthier. Join the revolution in fitness coaching today.
+              Track smarter. Progress faster. Achieve more. Your all-in-one fitness companion.
             </p>
           </div>
           
           <div className="footer-links">
             <h4>Product</h4>
             <ul>
-              <li><Link to="/programs">Programs</Link></li>
-              <li><Link to="/pricing">Pricing</Link></li>
-              <li><Link to="/login">Login</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/auth/login">Login</Link></li>
+              <li><Link to="/auth/signup">Sign Up</Link></li>
             </ul>
           </div>
 
           <div className="footer-links">
             <h4>Company</h4>
             <ul>
-              <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><a href="mailto:support@fitnesstracker.com">Support</a></li>
             </ul>
           </div>
         </div>
         <div className="container" style={{ marginTop: '3rem', textAlign: 'center', fontSize: '0.8rem', color: '#666' }}>
-           © {new Date().getFullYear()} FitNix. All rights reserved.
+           © {new Date().getFullYear()} Fitness Tracker. All rights reserved.
         </div>
       </footer>
     </div>

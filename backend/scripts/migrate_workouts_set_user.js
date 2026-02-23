@@ -16,11 +16,10 @@ async function main() {
   }
 
   let user = null;
-  // try find by id first
   try {
     user = await User.findById(arg);
   } catch (e) {
-    // ignore
+
   }
   if (!user) {
     user = await User.findOne({ email: arg.toLowerCase() });
