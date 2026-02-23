@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
+fetch(`${API_URL}/api/ai`)
+
 fetch(`${API_URL}/api/data`)
   .then(res => res.json())
   .then(data => console.log(data))

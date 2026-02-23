@@ -11,6 +11,7 @@ const sendEmail = async (email, otpOrOptions) => {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD,
         },
+        secure: true,
         tls: {
           rejectUnauthorized: false
         },
