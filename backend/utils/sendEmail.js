@@ -11,10 +11,18 @@ const sendEmail = async (email, otpOrOptions) => {
           user: process.env.GMAIL_USER,
           pass: process.env.GMAIL_APP_PASSWORD,
         },
-        tls:{
+        tls: {
           rejectUnauthorized: false
+        },
+        connectionTimeout: 10000,
+        socketTimeout: 10000,
+        pool: {
+          maxConnections: 5,
+          maxMessages: 100
         }
       });
+    } else {
+      throw new Error('Gmail credentials not configured. Set GMAIL_USER and GMAIL_APP_PASSWORD in environment variables.');
     }
 
     let mailOptions;
