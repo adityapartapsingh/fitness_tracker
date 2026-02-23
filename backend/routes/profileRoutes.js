@@ -16,6 +16,10 @@ router.post('/water', profileController.addWaterIntake);
 router.get('/water/today', profileController.getTodayWaterIntake);
 router.get('/water/history', profileController.getWaterHistory);
 
+// Push subscription
+router.post('/subscribe', profileController.subscribePush);
+router.post('/unsubscribe', profileController.unsubscribePush);
+
 // BMI calculation
 router.get('/bmi', profileController.calculateBMI);
 

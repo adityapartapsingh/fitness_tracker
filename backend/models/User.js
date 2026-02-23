@@ -33,6 +33,8 @@ const userSchema = new mongoose.Schema({
       amount: { type: Number, required: true }, // in ml
     }
   ],
+  // Push notification subscriptions (web-push subscription objects)
+  pushSubscriptions: { type: [Object], default: [] },
   createdAt: { type: Date, default: Date.now },
 });
 

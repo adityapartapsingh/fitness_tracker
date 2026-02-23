@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const { sendSuccess, sendError } = require('../utils/responseHandler');
 const asyncHandler = require('../middleware/asyncHandler');
+const { sendPush } = require('../utils/pushService');
+const sendEmail = require('../utils/sendEmail');
 
 /**
  * GET USER PROFILE
@@ -182,3 +184,41 @@ exports.getWaterHistory = asyncHandler(async (req, res) => {
 
   sendSuccess(res, last7Days, 'Water history retrieved successfully');
 });
+
+/**
+ * SUBSCRIBE TO PUSH NOTIFICATIONS
+ */
+exports.subscribePush = asyncHandler(async (req, res) => {
+  const subscription = req.body.subscription;
+
+  if (!subscription) return sendError(res, 'Subscription object is required', 400);
+
+  const user = await User.findById(req.user.id);
+  if (!user) return sendError(res, 'User not found', 404);
+
+  // Avoid duplicates (by endpoint)
+  const exists = user.pushSubscriptions.some(s => s && s.endpoint === subscription.endpoint);
+  if (!exists) {
+    user.pushSubscriptions.push(subscription);
+    await user.save();
+  }
+
+  sendSuccess(res, null, 'Subscribed to push notifications');
+});
+
+/**
+ * UNSUBSCRIBE FROM PUSH NOTIFICATIONS
+ */
+exports.unsubscribePush = asyncHandler(async (req, res) => {
+  const { endpoint } = req.body;
+  if (!endpoint) return sendError(res, 'Subscription endpoint is required', 400);
+
+  const user = await User.findById(req.user.id);
+  if (!user) return sendError(res, 'User not found', 404);
+
+  user.pushSubscriptions = user.pushSubscriptions.filter(s => s && s.endpoint !== endpoint);
+  await user.save();
+
+  sendSuccess(res, null, 'Unsubscribed from push notifications');
+});
+
