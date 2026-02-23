@@ -75,6 +75,7 @@ function AIAssistantWidget({ userToken }) {
     setInput('');
 
     try {
+      console.log('🤖 Sending to AI:', originalInput);
       const res = await fetch('/api/ai/workout', {
         method: 'POST',
         headers: {
@@ -84,7 +85,11 @@ function AIAssistantWidget({ userToken }) {
         body: JSON.stringify({ prompt: originalInput })
       });
 
-      if (!res.ok) throw new Error('Failed to fetch response');
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('❌ Backend error response:', res.status, errorText);
+        throw new Error(`Backend error (${res.status}): ${errorText}`);
+      }
 
       const data = await res.json();
       let aiText = '';
