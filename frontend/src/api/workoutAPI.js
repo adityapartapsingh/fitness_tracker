@@ -2,12 +2,13 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-fetch(`${API_URL}/api/ai`)
-
-fetch(`${API_URL}/api/data`)
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
+await fetch(`${API_URL}/ai/workout`, { 
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+  },
+});
 
 const api = axios.create({
   baseURL: API_URL,
