@@ -23,13 +23,13 @@
   color: #991b1b;
 }
 
-.App.dark-mode .alert-success {
+.app-layout.dark-mode .alert-success {
   background-color: rgba(16, 185, 129, 0.2);
   border-color: #10b981;
   color: #86efac;
 }
 
-.App.dark-mode .alert-error {
+.app-layout.dark-mode .alert-error {
   background-color: rgba(239, 68, 68, 0.2);
   border-color: #ef4444;
   color: #fca5a5;
@@ -61,7 +61,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .profile-card {
+.app-layout.dark-mode .profile-card {
   background-color: #1a1a2e;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -73,7 +73,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .profile-card h2 {
+.app-layout.dark-mode .profile-card h2 {
   color: #e0e0e0;
 }
 
@@ -84,7 +84,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .profile-card h3 {
+.app-layout.dark-mode .profile-card h3 {
   color: #e0e0e0;
 }
 
@@ -104,7 +104,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .form-group label {
+.app-layout.dark-mode .form-group label {
   color: #e0e0e0;
 }
 
@@ -120,8 +120,8 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .form-group input,
-.App.dark-mode .form-group select {
+.app-layout.dark-mode .form-group input,
+.app-layout.dark-mode .form-group select {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -186,7 +186,7 @@
   margin-bottom: 1.5rem;
 }
 
-.App.dark-mode .bmi-result {
+.app-layout.dark-mode .bmi-result {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
 }
 
@@ -215,7 +215,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .bmi-info p {
+.app-layout.dark-mode .bmi-info p {
   color: #e0e0e0;
 }
 
@@ -227,7 +227,7 @@
   transition: background-color 0.3s ease;
 }
 
-.App.dark-mode .bmi-guide {
+.app-layout.dark-mode .bmi-guide {
   background-color: #2a2a3e;
 }
 
@@ -237,7 +237,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .bmi-guide h4 {
+.app-layout.dark-mode .bmi-guide h4 {
   color: #e0e0e0;
 }
 
@@ -253,7 +253,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .bmi-guide li {
+.app-layout.dark-mode .bmi-guide li {
   color: #e0e0e0;
 }
 
@@ -280,7 +280,7 @@
   transition: background 0.3s ease;
 }
 
-.App.dark-mode .water-display {
+.app-layout.dark-mode .water-display {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15));
 }
 
@@ -296,7 +296,7 @@
   transition: background 0.3s ease;
 }
 
-.App.dark-mode .water-meter {
+.app-layout.dark-mode .water-meter {
   background: #333;
 }
 
@@ -328,7 +328,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .water-stat {
+.app-layout.dark-mode .water-stat {
   color: #e0e0e0;
 }
 
@@ -359,7 +359,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .water-input-group label {
+.app-layout.dark-mode .water-input-group label {
   color: #e0e0e0;
 }
 
@@ -380,7 +380,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .input-with-buttons input {
+.app-layout.dark-mode .input-with-buttons input {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -397,7 +397,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .btn-quick {
+.app-layout.dark-mode .btn-quick {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -421,7 +421,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .water-goal-update label {
+.app-layout.dark-mode .water-goal-update label {
   color: #e0e0e0;
 }
 
@@ -435,7 +435,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .water-goal-update input {
+.app-layout.dark-mode .water-goal-update input {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -449,7 +449,7 @@
   transition: background 0.3s ease;
 }
 
-.App.dark-mode .water-history {
+.app-layout.dark-mode .water-history {
   background: #2a2a3e;
 }
 
@@ -477,7 +477,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .history-date {
+.app-layout.dark-mode .history-date {
   color: #a0a0b0;
 }
 
@@ -492,7 +492,7 @@
   transition: background 0.3s ease;
 }
 
-.App.dark-mode .history-bar {
+.app-layout.dark-mode .history-bar {
   background: #333;
 }
 
@@ -508,7 +508,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .history-amount {
+.app-layout.dark-mode .history-amount {
   color: #e0e0e0;
 }
 

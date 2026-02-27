@@ -12,6 +12,10 @@ const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const workoutRoutes = require('./routes/workoutRoutes');
 const aiRoutes = require('./routes/aiRoutes');
+const exerciseRoutes = require('./routes/exerciseRoutes');
+const mealRoutes = require('./routes/mealRoutes');
+const bodyMeasurementRoutes = require('./routes/bodyMeasurementRoutes');
+const achievementRoutes = require('./routes/achievementRoutes');
 const authMiddleware = require('./middleware/authMiddleware');
 const cron = require('node-cron');
 const User = require('./models/User');
@@ -34,6 +38,10 @@ app.use('/api/auth', authRoutes);
 app.use('/api/user', profileRoutes);
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/ai', authMiddleware, aiRoutes);
+app.use('/api/exercises', exerciseRoutes);
+app.use('/api/meals', mealRoutes);
+app.use('/api/measurements', bodyMeasurementRoutes);
+app.use('/api/achievements', achievementRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -74,7 +82,7 @@ app.listen(PORT, () => {
             // Calculate today's water intake
             const todayIntakeEntry = (user.waterIntake || []).find(w => {
               const d = new Date(w.date);
-              d.setHours(0,0,0,0);
+              d.setHours(0, 0, 0, 0);
               return d.getTime() === today.getTime();
             });
 
@@ -86,7 +94,7 @@ app.listen(PORT, () => {
 
             // Determine whether to send streak reminder
             let lastWorkoutDate = user.lastWorkoutDate ? new Date(user.lastWorkoutDate) : null;
-            if (lastWorkoutDate) { lastWorkoutDate.setHours(0,0,0,0); }
+            if (lastWorkoutDate) { lastWorkoutDate.setHours(0, 0, 0, 0); }
             const missedTodayWorkout = !lastWorkoutDate || lastWorkoutDate.getTime() !== today.getTime();
 
             if (!shouldRemindWater && !missedTodayWorkout) continue; // nothing to do

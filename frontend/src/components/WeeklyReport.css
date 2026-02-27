@@ -1,0 +1,193 @@
+.weekly-report {
+    padding: 1rem 0;
+}
+
+.wr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.wr-header h2 {
+    margin: 0;
+}
+
+.wr-toggle {
+    display: flex;
+    gap: 0;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.wr-toggle button {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    background: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.wr-toggle button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.wr-summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.wr-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.wr-card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+}
+
+.wr-card-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.wr-card-label {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.2rem;
+}
+
+.wr-change {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.wr-change.up {
+    background: rgba(16, 185, 129, 0.15);
+    color: #059669;
+}
+
+.wr-change.down {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.wr-nutrition {
+    background: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.wr-nutrition h3 {
+    margin: 0 0 0.75rem;
+}
+
+.wr-nutrition-grid {
+    display: flex;
+    gap: 1.5rem;
+    font-weight: 600;
+    flex-wrap: wrap;
+}
+
+.wr-chart {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1.5rem;
+}
+
+.wr-chart h3 {
+    margin: 0 0 1rem;
+}
+
+.wr-insights {
+    text-align: center;
+}
+
+.wr-insights-btn {
+    padding: 0.75rem 2rem;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.wr-insights-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.wr-insights-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.wr-insights-content {
+    margin-top: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: left;
+    line-height: 1.6;
+}
+
+.app-layout.dark-mode .wr-card,
+.app-layout.dark-mode .wr-nutrition,
+.app-layout.dark-mode .wr-chart,
+.app-layout.dark-mode .wr-insights-content {
+    background: #1a1a2e;
+}
+
+.app-layout.dark-mode .wr-toggle button {
+    background: #2a2a3e;
+    color: #e0e0e0;
+}
+
+.app-layout.dark-mode .wr-toggle button.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.app-layout.dark-mode .wr-toggle {
+    border-color: #333;
+}
+
+.app-layout.dark-mode .wr-card-value {
+    color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .wr-summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .wr-nutrition-grid {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

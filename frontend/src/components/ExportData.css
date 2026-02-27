@@ -1,0 +1,118 @@
+.export-data {
+    padding: 1rem 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.export-data h2 {
+    margin-bottom: 0.5rem;
+}
+
+.export-desc {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.export-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.export-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.export-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.export-icon {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+}
+
+.export-card h3 {
+    margin: 0 0 0.5rem;
+}
+
+.export-card p {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.export-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.csv-btn {
+    background: #10b981;
+    color: white;
+}
+
+.csv-btn:hover {
+    background: #059669;
+}
+
+.json-btn {
+    background: #3b82f6;
+    color: white;
+}
+
+.json-btn:hover {
+    background: #2563eb;
+}
+
+.export-status {
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    font-weight: 600;
+    animation: fadeIn 0.3s;
+}
+
+.app-layout.dark-mode .export-card {
+    background: #1a1a2e;
+}
+
+.app-layout.dark-mode .export-desc {
+    color: #aaa;
+}
+
+.app-layout.dark-mode .export-card p {
+    color: #999;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .export-cards {
+        grid-template-columns: 1fr;
+    }
+}

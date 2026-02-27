@@ -8,6 +8,8 @@ router.use(authMiddleware);
 
 router.get('/', workoutController.getAllWorkouts);
 router.get('/stats', workoutController.getStatistics);
+router.get('/report', workoutController.getReport);
+router.get('/export', workoutController.exportData);
 router.get('/:id', workoutController.getWorkoutById);
 
 

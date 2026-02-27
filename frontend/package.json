@@ -7,6 +7,7 @@
     "axios": "^1.13.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.11.0",
     "react-scripts": "5.0.1",
     "recharts": "^3.5.1",
@@ -36,5 +37,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://fitness-tracker-gzjv.onrender.com"
+  "proxy": "http://localhost:5000"
 }

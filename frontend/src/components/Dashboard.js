@@ -9,12 +9,75 @@ import WeeklyStreak from './WeeklyStreak';
 import Profile from './Profile';
 import WaterWidget from './WaterWidget';
 import AIAssistantWidget from './AIAssistantWidget';
+import ExerciseLibrary from './ExerciseLibrary';
+import MealTracker from './MealTracker';
+import BodyMeasurements from './BodyMeasurements';
+import WeeklyReport from './WeeklyReport';
+import Achievements from './Achievements';
+import Leaderboard from './Leaderboard';
+import WorkoutTimer from './WorkoutTimer';
+import ExportData from './ExportData';
+
+const NAV_SECTIONS = [
+    {
+        label: 'Overview',
+        items: [
+            { id: 'dashboard', icon: '📊', label: 'Dashboard' },
+            { id: 'report', icon: '📈', label: 'Reports' },
+        ],
+    },
+    {
+        label: 'Fitness',
+        items: [
+            { id: 'add', icon: '➕', label: 'Log Workout' },
+            { id: 'history', icon: '📋', label: 'History' },
+            { id: 'exercises', icon: '💪', label: 'Exercises' },
+            { id: 'timer', icon: '⏱️', label: 'Timer' },
+            { id: 'streaks', icon: '🔥', label: 'Streaks' },
+        ],
+    },
+    {
+        label: 'Nutrition',
+        items: [
+            { id: 'meals', icon: '🍽️', label: 'Meals' },
+        ],
+    },
+    {
+        label: 'Body',
+        items: [
+            { id: 'body', icon: '📏', label: 'Measurements' },
+        ],
+    },
+    {
+        label: 'Community',
+        items: [
+            { id: 'achievements', icon: '🏆', label: 'Achievements' },
+            { id: 'leaderboard', icon: '🏅', label: 'Leaderboard' },
+        ],
+    },
+    {
+        label: 'Settings',
+        items: [
+            { id: 'profile', icon: '👤', label: 'Profile' },
+            { id: 'export', icon: '📥', label: 'Export Data' },
+        ],
+    },
+];
+
+const PAGE_TITLES = {
+    dashboard: 'Dashboard', add: 'Log Workout', history: 'Workout History',
+    exercises: 'Exercise Library', meals: 'Meal Tracker', streaks: 'Streaks',
+    profile: 'Profile', body: 'Body Measurements', report: 'Reports',
+    achievements: 'Achievements', leaderboard: 'Leaderboard', timer: 'Workout Timer',
+    export: 'Export Data',
+};
 
 export default function Dashboard({ user, handleLogout, setDarkMode, darkMode }) {
     const [workouts, setWorkouts] = useState([]);
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const fetchWorkouts = async () => {
         setLoading(true);
@@ -103,96 +166,117 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     };
 
     const streakInfo = user ? getStreakInfo() : { currentStreak: 0, longestStreak: 0, streakPoints: 0 };
+    const initials = user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '?';
+
+    const navigate = (id) => {
+        setActiveTab(id);
+        setMobileOpen(false);
+    };
 
     return (
-        <div className={`App ${darkMode ? 'dark-mode' : ''}`}>
-            <nav className="nav-tabs">
-                <div className="nav-title">📊 EPT</div>
-                <div className="nav-buttons">
-                    <button
-                        className={`tab-button ${activeTab === 'dashboard' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('dashboard')}
-                    >
-                        📊 Dashboard
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'add' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('add')}
-                    >
-                        ➕ Add Workout
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'history' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('history')}
-                    >
-                        📋 History
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'streaks' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('streaks')}
-                    >
-                        🔥 Streaks
-                    </button>
-                    <button
-                        className={`tab-button ${activeTab === 'profile' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('profile')}
-                    >
-                        👤 Profile
-                    </button>
-                    <div className="streak-display">
-                        <span className="streak-item">🔥 {streakInfo.currentStreak} day streak</span>
-                        <span className="streak-item">⭐ {streakInfo.streakPoints} points</span>
-                    </div>
-                    <div className="nav-user-info">
-                        <span>Hello, {user.name}</span>
-                        <button
-                            className="theme-toggle"
-                            onClick={() => setDarkMode(!darkMode)}
-                            title="Toggle dark mode"
-                        >
-                            {darkMode ? '☀️' : '🌙'}
-                        </button>
-                        <button className="tab-button" onClick={handleLogout}>Logout</button>
+        <div className={`app-layout ${darkMode ? 'dark-mode' : ''}`}>
+            {/* Sidebar */}
+            <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
+                <div className="sidebar-brand">
+                    <div className="brand-icon">⚡</div>
+                    <div>
+                        <div className="brand-text">FitTracker</div>
+                        <div className="brand-sub">Pro Dashboard</div>
                     </div>
                 </div>
-            </nav>
 
-            <main className="app-main">
-                {activeTab === 'dashboard' && (
-                    <div className="dashboard">
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                            <WeeklyStreak workouts={workouts} />
-                            <WaterWidget />
+                {NAV_SECTIONS.map(section => (
+                    <div className="sidebar-section" key={section.label}>
+                        <div className="sidebar-section-label">{section.label}</div>
+                        <div className="sidebar-nav">
+                            {section.items.map(item => (
+                                <button
+                                    key={item.id}
+                                    className={`sidebar-item ${activeTab === item.id ? 'active' : ''}`}
+                                    onClick={() => navigate(item.id)}
+                                >
+                                    <span className="sidebar-item-icon">{item.icon}</span>
+                                    <span className="sidebar-item-label">{item.label}</span>
+                                </button>
+                            ))}
                         </div>
-                        {stats && <Statistics stats={stats} />}
-                        <ProgressCharts workouts={workouts} />
                     </div>
-                )}
+                ))}
 
-                {activeTab === 'add' && (
-                    <WorkoutForm onSubmit={handleAddWorkout} />
-                )}
+                <div className="sidebar-footer">
+                    <div className="sidebar-user">
+                        <div className="sidebar-avatar">{initials}</div>
+                        <div className="sidebar-user-info">
+                            <div className="sidebar-user-name">{user.name}</div>
+                            <div className="sidebar-user-role">Member</div>
+                        </div>
+                    </div>
+                    <div className="sidebar-actions">
+                        <button className="sidebar-action-btn" onClick={() => setDarkMode(!darkMode)} title="Toggle theme">
+                            {darkMode ? '☀️' : '🌙'} Theme
+                        </button>
+                        <button className="sidebar-action-btn" onClick={handleLogout} title="Sign out">
+                            🚪 Logout
+                        </button>
+                    </div>
+                </div>
+            </aside>
 
-                {activeTab === 'history' && (
-                    <WorkoutList
-                        workouts={workouts}
-                        loading={loading}
-                        onDelete={handleDeleteWorkout}
-                    />
-                )}
+            {/* Mobile overlay */}
+            <div
+                className={`sidebar-overlay ${mobileOpen ? 'visible' : ''}`}
+                onClick={() => setMobileOpen(false)}
+            />
 
-                {activeTab === 'streaks' && (
-                    <StreakCalendar workouts={workouts} />
-                )}
+            {/* Main content */}
+            <div className="main-content">
+                {/* Top bar */}
+                <header className="topbar">
+                    <div className="topbar-left">
+                        <button className="mobile-menu-btn" onClick={() => setMobileOpen(!mobileOpen)}>☰</button>
+                        <h1 className="topbar-page-title">{PAGE_TITLES[activeTab] || 'Dashboard'}</h1>
+                    </div>
+                    <div className="topbar-right">
+                        <div className="topbar-streak">
+                            <span className="topbar-streak-item">🔥 {streakInfo.currentStreak}d streak</span>
+                            <span className="topbar-streak-item">⭐ {streakInfo.streakPoints} pts</span>
+                        </div>
+                    </div>
+                </header>
 
-                {activeTab === 'profile' && (
-                    <Profile />
-                )}
-            </main>
+                {/* Page content */}
+                <main className="page-content">
+                    {activeTab === 'dashboard' && (
+                        <div className="dashboard">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                                <WeeklyStreak workouts={workouts} />
+                                <WaterWidget />
+                            </div>
+                            {stats && <Statistics stats={stats} />}
+                            <ProgressCharts workouts={workouts} />
+                        </div>
+                    )}
+                    {activeTab === 'add' && <WorkoutForm onSubmit={handleAddWorkout} />}
+                    {activeTab === 'history' && (
+                        <WorkoutList workouts={workouts} loading={loading} onDelete={handleDeleteWorkout} />
+                    )}
+                    {activeTab === 'exercises' && <ExerciseLibrary />}
+                    {activeTab === 'meals' && <MealTracker />}
+                    {activeTab === 'streaks' && <StreakCalendar workouts={workouts} />}
+                    {activeTab === 'profile' && <Profile />}
+                    {activeTab === 'body' && <BodyMeasurements />}
+                    {activeTab === 'report' && <WeeklyReport />}
+                    {activeTab === 'achievements' && <Achievements />}
+                    {activeTab === 'leaderboard' && <Leaderboard />}
+                    {activeTab === 'timer' && <WorkoutTimer />}
+                    {activeTab === 'export' && <ExportData />}
+                </main>
 
-            <footer className="app-footer">
-                <p>© 2025 Exercise Progress Tracker | Stay Fit, Stay Healthy</p>
-            </footer>
+                <footer className="app-footer">
+                    <p>© 2025 FitTracker Pro — Stay Fit, Stay Healthy</p>
+                </footer>
+            </div>
+
             <AIAssistantWidget userToken={localStorage.getItem('token')} />
         </div>
     );

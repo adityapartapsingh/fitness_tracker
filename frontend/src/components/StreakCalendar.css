@@ -14,7 +14,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .calendar-header h2 {
+.app-layout.dark-mode .calendar-header h2 {
   color: #e0e0e0;
 }
 
@@ -24,7 +24,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .calendar-header p {
+.app-layout.dark-mode .calendar-header p {
   color: #a0a0b0;
 }
 
@@ -37,7 +37,7 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.App.dark-mode .calendar-wrapper {
+.app-layout.dark-mode .calendar-wrapper {
   background-color: #1a1a2e;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -113,7 +113,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .month-select {
+.app-layout.dark-mode .month-select {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -141,7 +141,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .year-input {
+.app-layout.dark-mode .year-input {
   background-color: #2a2a3e;
   color: #e0e0e0;
   border-color: #333;
@@ -166,7 +166,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .month-year-display {
+.app-layout.dark-mode .month-year-display {
   color: #e0e0e0;
 }
 
@@ -188,7 +188,7 @@
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-.App.dark-mode .calendar-day-header {
+.app-layout.dark-mode .calendar-day-header {
   color: #e0e0e0;
   border-bottom-color: #333;
 }
@@ -209,7 +209,7 @@
   min-height: 70px;
 }
 
-.App.dark-mode .calendar-day {
+.app-layout.dark-mode .calendar-day {
   background: #2a2a3e;
   border-color: #333;
 }
@@ -226,7 +226,7 @@
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
 }
 
-.App.dark-mode .calendar-day.has-workout {
+.app-layout.dark-mode .calendar-day.has-workout {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
 }
@@ -236,7 +236,7 @@
   border-color: #d1d5db;
 }
 
-.App.dark-mode .calendar-day.no-workout {
+.app-layout.dark-mode .calendar-day.no-workout {
   background: #3a3a4e;
   border-color: #444;
 }
@@ -257,7 +257,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .day-number {
+.app-layout.dark-mode .day-number {
   color: #e0e0e0;
 }
 
@@ -265,7 +265,7 @@
   color: #9ca3af;
 }
 
-.App.dark-mode .calendar-day.no-workout .day-number {
+.app-layout.dark-mode .calendar-day.no-workout .day-number {
   color: #7a7a8a;
 }
 
@@ -291,7 +291,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.App.dark-mode .calendar-day:hover {
+.app-layout.dark-mode .calendar-day:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -306,7 +306,7 @@
   transition: background-color 0.3s ease;
 }
 
-.App.dark-mode .calendar-legend {
+.app-layout.dark-mode .calendar-legend {
   background: #2a2a3e;
 }
 
@@ -324,7 +324,7 @@
   transition: all 0.3s ease;
 }
 
-.App.dark-mode .legend-box {
+.app-layout.dark-mode .legend-box {
   border-color: #333;
 }
 
@@ -352,7 +352,7 @@
   transition: color 0.3s ease;
 }
 
-.App.dark-mode .legend-item span {
+.app-layout.dark-mode .legend-item span {
   color: #e0e0e0;
 }
 

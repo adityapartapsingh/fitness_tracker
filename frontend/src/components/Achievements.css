@@ -1,0 +1,151 @@
+.achievements-page {
+    padding: 1rem 0;
+}
+
+.achievements-page h2 {
+    margin-bottom: 1rem;
+}
+
+.achievements-summary {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.ach-count {
+    font-weight: 700;
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.ach-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.ach-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 5px;
+    transition: width 0.8s ease;
+}
+
+.ach-new-banner {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-weight: 600;
+    animation: slideDown 0.5s;
+}
+
+.ach-new-item {
+    background: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.ach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.ach-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.ach-card.unlocked {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, #fffbeb, white);
+}
+
+.ach-card.unlocked:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.2);
+}
+
+.ach-card.locked {
+    opacity: 0.55;
+    filter: grayscale(0.5);
+}
+
+.ach-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.locked-icon {
+    filter: grayscale(1);
+}
+
+.ach-card h4 {
+    margin: 0.3rem 0;
+    font-size: 1rem;
+}
+
+.ach-card p {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0.3rem 0;
+}
+
+.ach-date {
+    font-size: 0.7rem;
+    color: #999;
+}
+
+.app-layout.dark-mode .ach-card {
+    background: #1a1a2e;
+}
+
+.app-layout.dark-mode .ach-card.unlocked {
+    background: linear-gradient(135deg, #2a2a1e, #1a1a2e);
+}
+
+.app-layout.dark-mode .ach-card p {
+    color: #aaa;
+}
+
+.app-layout.dark-mode .ach-new-banner {
+    background: linear-gradient(135deg, #3a3520, #2a2a1e);
+    color: #fbbf24;
+}
+
+.app-layout.dark-mode .ach-new-item {
+    background: #2a2a3e;
+    color: #e0e0e0;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .ach-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
