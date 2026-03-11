@@ -78,6 +78,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [timerPrefill, setTimerPrefill] = useState(null);
 
     const fetchWorkouts = async () => {
         setLoading(true);
@@ -256,7 +257,7 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
                             <ProgressCharts workouts={workouts} />
                         </div>
                     )}
-                    {activeTab === 'add' && <WorkoutForm onSubmit={handleAddWorkout} />}
+                    {activeTab === 'add' && <WorkoutForm onSubmit={handleAddWorkout} prefill={timerPrefill} />}
                     {activeTab === 'history' && (
                         <WorkoutList workouts={workouts} loading={loading} onDelete={handleDeleteWorkout} />
                     )}
@@ -268,7 +269,10 @@ export default function Dashboard({ user, handleLogout, setDarkMode, darkMode })
                     {activeTab === 'report' && <WeeklyReport />}
                     {activeTab === 'achievements' && <Achievements />}
                     {activeTab === 'leaderboard' && <Leaderboard />}
-                    {activeTab === 'timer' && <WorkoutTimer />}
+                    {activeTab === 'timer' && <WorkoutTimer onLogWorkout={(data) => {
+                        setTimerPrefill(data);
+                        setActiveTab('add');
+                    }} />}
                     {activeTab === 'export' && <ExportData />}
                 </main>
 

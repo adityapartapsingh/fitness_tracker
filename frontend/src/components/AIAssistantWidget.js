@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import './AIAssistantWidget.css'; 
+import API_BASE_URL from '../constants/apiConstants';
+import './AIAssistantWidget.css';
 
 const markdownStyles = {
   container: {
@@ -12,7 +13,7 @@ const markdownStyles = {
     color: '#374151',
     maxWidth: '100%',
     marginTop: '10px',
-    whiteSpace: 'pre-wrap', 
+    whiteSpace: 'pre-wrap',
     lineHeight: '1.6',
   },
   heading: {
@@ -25,17 +26,17 @@ const markdownStyles = {
 };
 function FitnessPlanDisplay({ text }) {
   if (!text) return null;
-  
+
   return (
     <div style={markdownStyles.container}>
       <ReactMarkdown
         components={{
-          h1: ({node, ...props}) => <h1 style={markdownStyles.heading} {...props} />,
-          h2: ({node, ...props}) => <h2 style={{...markdownStyles.heading, fontSize: '1.2em'}} {...props} />,
-          strong: ({node, ...props}) => <strong style={{color: '#2563eb', fontWeight: 'bold'}} {...props} />,
-          ul: ({node, ...props}) => <ul style={{paddingLeft: '20px', margin: '10px 0'}} {...props} />,
-          li: ({node, ...props}) => <li style={{marginBottom: '5px'}} {...props} />,
-          p: ({node, ...props}) => <p style={{marginBottom: '10px'}} {...props} />,
+          h1: ({ node, ...props }) => <h1 style={markdownStyles.heading} {...props} />,
+          h2: ({ node, ...props }) => <h2 style={{ ...markdownStyles.heading, fontSize: '1.2em' }} {...props} />,
+          strong: ({ node, ...props }) => <strong style={{ color: '#2563eb', fontWeight: 'bold' }} {...props} />,
+          ul: ({ node, ...props }) => <ul style={{ paddingLeft: '20px', margin: '10px 0' }} {...props} />,
+          li: ({ node, ...props }) => <li style={{ marginBottom: '5px' }} {...props} />,
+          p: ({ node, ...props }) => <p style={{ marginBottom: '10px' }} {...props} />,
         }}
       >
         {text}
@@ -52,11 +53,11 @@ function AIAssistantWidget({ userToken }) {
   const [messages, setMessages] = useState([
     { role: 'assistant', content: 'Hi! I am your AI fitness assistant. How can I help you today?' }
   ]);
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
-  
+
+
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ function AIAssistantWidget({ userToken }) {
 
     try {
       console.log('🤖 Sending to AI:', originalInput);
-      const res = await fetch('/api/ai/workout', {
+      const res = await fetch(`${API_BASE_URL}/ai/workout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -117,7 +118,7 @@ function AIAssistantWidget({ userToken }) {
       </div>
       {open && (
         <div className="ai-assistant-chatbox">
-       
+
           <div className="ai-assistant-header">
             <span>AI Assistant</span>
             <button className="ai-assistant-close" onClick={() => setOpen(false)}>×</button>
@@ -126,7 +127,7 @@ function AIAssistantWidget({ userToken }) {
           <div className="ai-assistant-messages">
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                
+
                 {msg.role === 'user' ? (
                   <div className="ai-msg ai-msg-user">
                     {msg.content}
@@ -134,7 +135,7 @@ function AIAssistantWidget({ userToken }) {
                 ) : (
                   <FitnessPlanDisplay text={msg.content} />
                 )}
-                
+
               </div>
             ))}
 

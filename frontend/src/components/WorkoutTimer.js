@@ -1,15 +1,27 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { exerciseAPI } from '../api/client';
 import './WorkoutTimer.css';
 
-export default function WorkoutTimer() {
+export default function WorkoutTimer({ onLogWorkout }) {
     const [mode, setMode] = useState('workout'); // workout | rest
     const [workoutTime, setWorkoutTime] = useState(60);
     const [restTime, setRestTime] = useState(30);
     const [timeLeft, setTimeLeft] = useState(60);
     const [running, setRunning] = useState(false);
     const [sets, setSets] = useState(0);
+    const [totalWorkSeconds, setTotalWorkSeconds] = useState(0);
     const intervalRef = useRef(null);
-    const audioRef = useRef(null);
+
+    // Exercise selection
+    const [exercises, setExercises] = useState([]);
+    const [selectedExercise, setSelectedExercise] = useState(null);
+    const [showLogged, setShowLogged] = useState(false);
+
+    useEffect(() => {
+        exerciseAPI.getAll().then(res => {
+            setExercises(res.data || res || []);
+        }).catch(() => { });
+    }, []);
 
     const playBeep = useCallback(() => {
         try {
@@ -29,6 +41,9 @@ export default function WorkoutTimer() {
         if (running && timeLeft > 0) {
             intervalRef.current = setInterval(() => {
                 setTimeLeft(t => t - 1);
+                if (mode === 'workout') {
+                    setTotalWorkSeconds(s => s + 1);
+                }
             }, 1000);
         } else if (timeLeft === 0 && running) {
             playBeep();
@@ -51,6 +66,8 @@ export default function WorkoutTimer() {
         setMode('workout');
         setTimeLeft(workoutTime);
         setSets(0);
+        setTotalWorkSeconds(0);
+        setShowLogged(false);
     };
 
     const formatTime = (s) => {
@@ -63,6 +80,24 @@ export default function WorkoutTimer() {
         ? ((workoutTime - timeLeft) / workoutTime) * 100
         : ((restTime - timeLeft) / restTime) * 100;
 
+    const totalMins = Math.round(totalWorkSeconds / 60 * 10) / 10;
+    const estimatedCalories = selectedExercise
+        ? Math.round(selectedExercise.caloriesPerMinute * totalMins)
+        : Math.round(totalMins * 5);
+
+    const handleLogWorkout = () => {
+        if (onLogWorkout && totalMins > 0) {
+            onLogWorkout({
+                exerciseName: selectedExercise ? selectedExercise.name : 'Timed Workout',
+                duration: String(totalMins),
+                calories: String(estimatedCalories),
+                notes: `${sets} sets completed via Timer${selectedExercise ? ` — ${selectedExercise.category}` : ''}`,
+            });
+            setShowLogged(true);
+            setTimeout(() => setShowLogged(false), 3000);
+        }
+    };
+
     const presets = [
         { label: 'HIIT', work: 30, rest: 15 },
         { label: 'Tabata', work: 20, rest: 10 },
@@ -74,6 +109,25 @@ export default function WorkoutTimer() {
         <div className="workout-timer">
             <h2>⏱️ Workout Timer</h2>
 
+            {/* Exercise selector */}
+            <div className="timer-exercise-select">
+                <label>Exercise (optional)</label>
+                <select
+                    value={selectedExercise ? selectedExercise._id : ''}
+                    onChange={e => {
+                        const ex = exercises.find(x => x._id === e.target.value);
+                        setSelectedExercise(ex || null);
+                    }}
+                >
+                    <option value="">— General Workout —</option>
+                    {exercises.map(ex => (
+                        <option key={ex._id} value={ex._id}>
+                            {ex.name} ({ex.category} · {ex.caloriesPerMinute} cal/min)
+                        </option>
+                    ))}
+                </select>
+            </div>
+
             <div className="timer-presets">
                 {presets.map(p => (
                     <button key={p.label} className="preset-btn" onClick={() => {
@@ -83,6 +137,7 @@ export default function WorkoutTimer() {
                         setRunning(false);
                         setMode('workout');
                         setSets(0);
+                        setTotalWorkSeconds(0);
                     }}>
                         {p.label}
                         <small>{p.work}s / {p.rest}s</small>
@@ -111,7 +166,7 @@ export default function WorkoutTimer() {
                 <div className="timer-circle">
                     <svg viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="45" fill="none" stroke="#e5e7eb" strokeWidth="6" />
-                        <circle cx="50" cy="50" r="45" fill="none" stroke={mode === 'workout' ? '#3b82f6' : '#10b981'} strokeWidth="6" strokeDasharray={`${progress * 2.83} ${283 - progress * 2.83}`} strokeDashoffset="70.75" strokeLinecap="round" style={{ transition: 'stroke-dasharray 1s linear' }} />
+                        <circle cx="50" cy="50" r="45" fill="none" stroke={mode === 'workout' ? '#6366f1' : '#10b981'} strokeWidth="6" strokeDasharray={`${progress * 2.83} ${283 - progress * 2.83}`} strokeDashoffset="70.75" strokeLinecap="round" style={{ transition: 'stroke-dasharray 1s linear' }} />
                     </svg>
                     <div className="timer-text">
                         <div className="timer-mode-label">{mode === 'workout' ? '💪 WORK' : '😮‍💨 REST'}</div>
@@ -127,9 +182,29 @@ export default function WorkoutTimer() {
                 <button className="timer-btn reset" onClick={resetTimer}>🔄 Reset</button>
             </div>
 
-            <div className="timer-sets">Sets completed: <strong>{sets}</strong></div>
+            {/* Session stats */}
+            <div className="timer-session-stats">
+                <div className="timer-stat">
+                    <span className="timer-stat-value">{sets}</span>
+                    <span className="timer-stat-label">Sets</span>
+                </div>
+                <div className="timer-stat">
+                    <span className="timer-stat-value">{totalMins}</span>
+                    <span className="timer-stat-label">Minutes</span>
+                </div>
+                <div className="timer-stat">
+                    <span className="timer-stat-value">{estimatedCalories}</span>
+                    <span className="timer-stat-label">Est. Calories</span>
+                </div>
+            </div>
 
-            <audio ref={audioRef} />
+            {/* Log workout button */}
+            {totalMins > 0 && onLogWorkout && (
+                <button className="timer-log-btn" onClick={handleLogWorkout}>
+                    📋 Log This Workout ({totalMins} min · {estimatedCalories} cal)
+                </button>
+            )}
+            {showLogged && <div className="timer-logged-msg">✅ Sent to Log Workout tab!</div>}
         </div>
     );
 }

@@ -170,13 +170,107 @@
     color: #666;
 }
 
+/* Exercise selector */
+.timer-exercise-select {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.timer-exercise-select label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.timer-exercise-select select {
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px solid var(--border-color, #e5e7eb);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* Session stats */
+.timer-session-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(99, 102, 241, 0.06);
+    border-radius: 12px;
+}
+
+.timer-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.timer-stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #6366f1;
+}
+
+.timer-stat-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Log workout button */
+.timer-log-btn {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 0.5rem;
+}
+
+.timer-log-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+.timer-logged-msg {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #10b981;
+    padding: 0.5rem;
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .app-layout.dark-mode .preset-btn {
     background: #2a2a3e;
     border-color: #333;
     color: #e0e0e0;
 }
 
-.app-layout.dark-mode .timer-setting input {
+.app-layout.dark-mode .timer-setting input,
+.app-layout.dark-mode .timer-exercise-select select {
     background: #2a2a3e;
     color: #e0e0e0;
     border-color: #333;
@@ -190,6 +284,18 @@
     stroke: #333;
 }
 
+.app-layout.dark-mode .timer-session-stats {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.app-layout.dark-mode .timer-stat-value {
+    color: #a5b4fc;
+}
+
+.app-layout.dark-mode .timer-stat-label {
+    color: #94a3b8;
+}
+
 @media (max-width: 480px) {
     .timer-display {
         width: 200px;
@@ -198,5 +304,9 @@
 
     .timer-countdown {
         font-size: 2.2rem;
+    }
+
+    .timer-session-stats {
+        gap: 1rem;
     }
 }
